@@ -3,9 +3,9 @@ var UserConstants = require('../constants/UserConstants');
 
 var UserActions = {
 
-  create: function(text) {
+  UserRegister: function(email, passwd, confm_passwd) {
     AppDispatcher.dispatch({
-      actionType: UserConstants.USER_CREATE,
+      actionType: UserConstants.USER_REGISTER,
       text: text
     });
   },

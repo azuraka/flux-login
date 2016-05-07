@@ -7,10 +7,12 @@ var CHANGE_EVENT = 'change';
 
 var _users = {};
 
-function create(text) {
+function UserRegister(email, passwd, confm_passwd) {
   var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
   _users[id] = {
     id: id,
+    email: email,
+    passwd: passwd,
     activated: false,
     text: text
   };
