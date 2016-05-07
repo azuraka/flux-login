@@ -3,18 +3,18 @@ var UserConstants = require('../constants/UserConstants');
 
 var UserActions = {
 
-  UserRegister: function(name, email, passwd) {
+  UserRegister: function(name, email, password) {
     AppDispatcher.dispatch({
       actionType: UserConstants.USER_REGISTER,
       name: name,
       email: email,
-      passwd: passwd
+      password: password
     });
 
 // Input: {‘email’, ‘name’, ‘password’}
 // Output: {‘status’, ‘message’, ‘data’: User details including id}
     
-    var registerData = {email, name, passwd}
+    var registerData = {email, name, password}
 
     $.ajax({
       type: 'POST',
@@ -50,14 +50,14 @@ var UserActions = {
 // Input: {‘email’, ‘password’}
 // Output: {‘status’, ‘message’, ‘data’: User details}
 
-  UserLogin: function(email, passwd) {
+  UserLogin: function(email, password) {
   	AppDispatcher.dispatch({
       actionType: UserConstants.USER_LOGIN,
       email: email,
-      passwd: passwd
+      password: password
     });
 
-    var loginData = {email, passwd}
+    var loginData = {email, password}
 
     $.ajax({
       type: 'POST',

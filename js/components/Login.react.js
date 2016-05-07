@@ -58,7 +58,6 @@ var Login = React.createClass({
   },
 
   _onChange2: function() {
-  
   }
 
 

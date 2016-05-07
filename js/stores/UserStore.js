@@ -7,8 +7,11 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var error = '';
 
-function create_error(errorText) {
-  error = errorText;
+function create_error(status, errorText) {
+  if (status=="error")
+    error = errorText;
+  else
+    error = "Success"
 }
 
 var UserStore = assign({}, EventEmitter.prototype, {
@@ -36,11 +39,12 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.USER_REGISTER_SUCCESS:
       console.log(action.response);
-      create_error(action.response['message']);
+      create_error(action.response['status'], action.response['message']);
       UserStore.emitChange();
       break;
     case UserConstants.USER_REGISTER_FAIL:
       console.log(action.response);
+      create_error(action.response['status'], action.response['message']);
       // Do another something
       UserStore.emitChange();
       break;
@@ -49,11 +53,13 @@ AppDispatcher.register(function(action) {
       UserStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_SUCCESS:
+      create_error(action.response['status'], action.response['message']);
       // Again do something
       console.log(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_FAIL:
+      create_error(action.response['status'], action.response['message']);
       // Again do something
       console.log(action.response);
       UserStore.emitChange();
