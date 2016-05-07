@@ -1,11 +1,19 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
+var UserStore = require('../stores/UserStore');
 
 var Register = React.createClass({
 
   getInitialState: function() {
     return {name: '', email: '', passwd: '', confm_passwd: ''};
+  },
+  componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange2);
+  },
+
+  componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange2);
   },
 
   render: function() {
@@ -57,7 +65,11 @@ var Register = React.createClass({
       else
         console.log("register failed");
     }
-  } 
+  },
+
+  _onChange2: function() {
+    console.log("Change Detected");
+  }
 
 
 

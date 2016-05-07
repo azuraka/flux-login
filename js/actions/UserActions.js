@@ -71,7 +71,7 @@ var UserActions = {
       success: function(data) {
         console.log("login ajax successful");
           AppDispatcher.handleViewAction({
-            actionType: UserConstants.USER_REGISTER_SUCCESS,
+            actionType: UserConstants.USER_LOGIN_SUCCESS,
             showLoading: false, 
             name: name, 
             email: email, 
@@ -82,7 +82,7 @@ var UserActions = {
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
           AppDispatcher.handleViewAction({
-            actionType: UserConstants.USER_REGISTER_FAIL,
+            actionType: UserConstants.USER_LOGIN_FAIL,
             showLoading: false, 
             errorMsg: err.toString()
           });
