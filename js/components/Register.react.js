@@ -45,8 +45,10 @@ var Register = React.createClass({
   _onSubmit: function(event, id) {
     event.preventDefault();
     if(event.target.id=="register") {
-      if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd) 
+      if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd){ 
+        UserActions.UserRegister(this.state.email, this.state.passwd, this.state.confm_passwd);
         console.log("register successful");
+      }
       else
         console.log("register failed");
     }

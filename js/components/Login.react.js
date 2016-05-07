@@ -39,8 +39,10 @@ var Login = React.createClass({
   _onSubmit: function(event, id) {
     event.preventDefault();
     if(event.target.id=="login") {
-      if (this.state.passwd && this.state.email)
+      if (this.state.passwd && this.state.email){
+        UserActions.UserLogin(this.state.email, this.state.passwd);
         console.log("login successful");
+      }
       else
         console.log("login failed");
     }
