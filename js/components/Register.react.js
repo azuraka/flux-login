@@ -1,11 +1,25 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
+var UserStore = require('../stores/UserStore');
+
+function seterror(){
+  return{
+    error: UserStore.errorMsg()
+  };
+}
 
 var Register = React.createClass({
 
   getInitialState: function() {
-    return {name: '', email: '', passwd: '', confm_passwd: ''};
+    return {name: '', email: '', passwd: '', confm_passwd: '', error:''};
+  },
+  componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange2);
+  },
+
+  componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange2);
   },
 
   render: function() {
@@ -33,6 +47,7 @@ var Register = React.createClass({
             <button id="register" type="button" onClick={this._onSubmit}>Register</button>
           </div>
         </form>
+        <div>{this.state.error}</div>
       </div>
     );
   },
@@ -53,12 +68,15 @@ var Register = React.createClass({
     if(event.target.id=="register") {
       if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd && this.state.name){ 
         UserActions.UserRegister(this.state.name, this.state.email, this.state.passwd);
-        console.log("register successful");
       }
       else
-        console.log("register failed");
+        console.log("Registration Failed !");
     }
-  } 
+  },
+
+  _onChange2: function() {
+    this.setState(seterror());
+  }
 
 
 
