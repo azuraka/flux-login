@@ -1,12 +1,22 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
+var UserStore = require('../stores/UserStore');
 
 var Login = React.createClass({
 
    getInitialState: function() {
     return {email: '', passwd: ''};
   },
+
+  componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange2);
+  },
+
+  componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange2);
+  },
+
 
   render: function() {
     return (
@@ -45,7 +55,12 @@ var Login = React.createClass({
       else
         console.log("login failed");
     }
-  } 
+  },
+
+  _onChange2: function() {
+    console.log("Change Detected");
+  }
+
 
 });
 

@@ -40,10 +40,12 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.USER_LOGIN_SUCCESS:
       // Again do something
+      console.log("User Login Recieved at Store (Success)");
       UserStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_FAIL:
       // Again do something
+      console.log("User Login Recieved at Store (Fail)");
       UserStore.emitChange();
       break;
     default:

@@ -63,7 +63,7 @@ var Register = React.createClass({
         UserActions.UserRegister(this.state.name, this.state.email, this.state.passwd);
       }
       else
-        console.log("register failed");
+        console.log("Registration Failed !");
     }
   },
 

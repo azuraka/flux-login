@@ -70,7 +70,7 @@ var UserActions = {
     },
       success: function(data) {
         console.log("login ajax successful");
-          AppDispatcher.handleViewAction({
+          AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_SUCCESS,
             showLoading: false, 
             name: name, 
@@ -81,7 +81,7 @@ var UserActions = {
 
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
-          AppDispatcher.handleViewAction({
+          AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_FAIL,
             showLoading: false, 
             errorMsg: err.toString()
