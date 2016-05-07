@@ -5,7 +5,7 @@ var UserActions = require('../actions/UserActions');
 var Register = React.createClass({
 
   getInitialState: function() {
-    return {email: '', passwd: '', confm_passwd: ''};
+    return {name: '', email: '', passwd: '', confm_passwd: ''};
   },
 
   render: function() {
@@ -13,6 +13,10 @@ var Register = React.createClass({
       <div>
         <h4>Register Account</h4>
         <form>
+          <div>
+            <input id="name" type="text" value={this.state.name} onChange={this._onChange}/>
+            <label htmlFor="name">Name</label>
+          </div>
           <div>
             <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
             <label htmlFor="email">Email</label>
@@ -34,7 +38,9 @@ var Register = React.createClass({
   },
 
   _onChange: function(event, value, id) {
-    if(event.target.id=="email")
+    if(event.target.id=="name")
+      this.setState({name: event.target.value});
+    else if(event.target.id=="email")
       this.setState({email: event.target.value});
     else if(event.target.id=="passwd")
       this.setState({passwd: event.target.value});
@@ -45,8 +51,8 @@ var Register = React.createClass({
   _onSubmit: function(event, id) {
     event.preventDefault();
     if(event.target.id=="register") {
-      if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd){ 
-        UserActions.UserRegister(this.state.email, this.state.passwd, this.state.confm_passwd);
+      if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd && this.state.name){ 
+        UserActions.UserRegister(this.state.name, this.state.email, this.state.passwd);
         console.log("register successful");
       }
       else
