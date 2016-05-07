@@ -1,6 +1,8 @@
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
-  USER_REGISTER: null,
-  USER_LOGIN: null
+  USER_REGISTER: 'USER_REGISTER',
+  USER_REGISTER_SUCCESS: 'USER_REGISTER_SUCCESS',
+  USER_REGISTER_FAIL: 'USER_REGISTER_FAIL',
+  USER_LOGIN: 'USER_LOGIN'
 });

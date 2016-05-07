@@ -11,8 +11,6 @@ var UserActions = {
       passwd: passwd
     });
 
-
-// Input
 // Input: {‘email’, ‘name’, ‘password’}
 // Output: {‘status’, ‘message’, ‘data’: User details including id}
     
@@ -28,19 +26,67 @@ var UserActions = {
         "X-Requested-With": "XMLHttpRequest"
     },
       success: function(data) {
-      	console.log("register ajax successful")
-        //this.setState({data: data});
+      	console.log("register ajax successful");
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_REGISTER_SUCCESS,
+          showLoading: false, 
+          name: name, 
+          email: email, 
+          registerationStatus: "Successful"
+        });
       }.bind(this),
+
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_REGISTER_FAIL,
+          showLoading: false, 
+          errorMsg: err.toString()
+        });
       }.bind(this)
     });
   },
 
+// Input: {‘email’, ‘password’}
+// Output: {‘status’, ‘message’, ‘data’: User details}
+
   UserLogin: function(email, passwd) {
   	AppDispatcher.dispatch({
       actionType: UserConstants.USER_LOGIN,
-      text: text
+      email: email,
+      passwd: passwd
+    });
+
+    var loginData = {email, passwd}
+
+    $.ajax({
+      type: 'POST',
+      data: loginData,
+      url: "http://docx.8finatics.com/auth/login",
+      dataType: 'json',
+      cache: false,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+    },
+      success: function(data) {
+        console.log("login ajax successful");
+          AppDispatcher.handleViewAction({
+            actionType: UserConstants.USER_REGISTER_SUCCESS,
+            showLoading: false, 
+            name: name, 
+            email: email, 
+            registerationStatus: "Successful"
+          });
+      }.bind(this),
+
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+          AppDispatcher.handleViewAction({
+            actionType: UserConstants.USER_REGISTER_FAIL,
+            showLoading: false, 
+            errorMsg: err.toString()
+          });
+      }.bind(this)
     });
   }
 };

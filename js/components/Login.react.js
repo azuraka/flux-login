@@ -41,7 +41,6 @@ var Login = React.createClass({
     if(event.target.id=="login") {
       if (this.state.passwd && this.state.email){
         UserActions.UserLogin(this.state.email, this.state.passwd);
-        console.log("login successful");
       }
       else
         console.log("login failed");
