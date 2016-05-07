@@ -10,10 +10,18 @@ var UserActions = {
       passwd: passwd,
       confm_passwd: confm_passwd
     });
+
+
+// Input: {‘email’, ‘name’, ‘password’}
+// Output: {‘status’, ‘message’, ‘data’: User details including id}
+
     $.ajax({
-      url: this.props.url,
+      type: 'POST',
+      url: "http://docx.8finatics.com/auth/register",
       dataType: 'json',
       cache: false,
+      headers: {
+    },
       success: function(data) {
       	console.log("register ajax successful")
         this.setState({data: data});
