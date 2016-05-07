@@ -3,19 +3,20 @@ var UserConstants = require('../constants/UserConstants');
 
 var UserActions = {
 
-  UserRegister: function(name, email, passwd) {
-    AppDispatcher.dispatch({
-      actionType: UserConstants.USER_REGISTER,
-      name: name,
-      email: email,
-      passwd: passwd
-    });
 
+// SHow loading Action
+  UserRegister: function(name, email, passwd) {
+
+    AppDispatcher.dispatch({
+      actionType: UserConstants.USER_REGISTER_SHOW_LOADING,
+      showloading : true
+    });
+    
 
 // Input
 // Input: {‘email’, ‘name’, ‘password’}
 // Output: {‘status’, ‘message’, ‘data’: User details including id}
-    
+
     var registerData = {email, name, passwd}
 
     $.ajax({
