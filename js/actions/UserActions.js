@@ -12,6 +12,7 @@ var UserActions = {
     });
 
 
+// Input
 // Input: {‘email’, ‘name’, ‘password’}
 // Output: {‘status’, ‘message’, ‘data’: User details including id}
 
@@ -21,6 +22,7 @@ var UserActions = {
       dataType: 'json',
       cache: false,
       headers: {
+        "X-Requested-With": "XMLHttpRequest"
     },
       success: function(data) {
       	console.log("register ajax successful")
