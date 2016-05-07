@@ -5,8 +5,17 @@ var assign = require('object-assign');
 
 
 var CHANGE_EVENT = 'change';
+var error = '';
+
+function create_error(errorText) {
+  error = errorText;
+}
 
 var UserStore = assign({}, EventEmitter.prototype, {
+  errorMsg: function() {
+    return error;
+  },
+
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
@@ -26,11 +35,12 @@ AppDispatcher.register(function(action) {
       UserStore.emitChange();
       break;
     case UserConstants.USER_REGISTER_SUCCESS:
-      console.log("User Register Recieved at Store (Success)");
+      console.log(action.response);
+      create_error(action.response['message']);
       UserStore.emitChange();
       break;
     case UserConstants.USER_REGISTER_FAIL:
-      console.log("User Register Recieved at Store (Fail)");
+      console.log(action.response);
       // Do another something
       UserStore.emitChange();
       break;
@@ -40,12 +50,12 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.USER_LOGIN_SUCCESS:
       // Again do something
-      console.log("User Login Recieved at Store (Success)");
+      console.log(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_FAIL:
       // Again do something
-      console.log("User Login Recieved at Store (Fail)");
+      console.log(action.response);
       UserStore.emitChange();
       break;
     default:

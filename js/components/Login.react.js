@@ -58,7 +58,7 @@ var Login = React.createClass({
   },
 
   _onChange2: function() {
-    console.log("Change Detected");
+  
   }
 
 

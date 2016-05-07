@@ -26,13 +26,13 @@ var UserActions = {
         "X-Requested-With": "XMLHttpRequest"
     },
       success: function(data) {
-      	console.log("register ajax successful");
         AppDispatcher.dispatch({
           actionType: UserConstants.USER_REGISTER_SUCCESS,
           showLoading: false, 
           name: name, 
           email: email, 
-          registerationStatus: "Successful"
+          registerationStatus: "Successful",
+          response:data
         });
       }.bind(this),
 
@@ -40,8 +40,8 @@ var UserActions = {
         console.error(this.props.url, status, err.toString());
         AppDispatcher.dispatch({
           actionType: UserConstants.USER_REGISTER_FAIL,
-          showLoading: false, 
-          errorMsg: err.toString()
+          showLoading: false,
+          response: err.toString()
         });
       }.bind(this)
     });
@@ -69,13 +69,13 @@ var UserActions = {
         "X-Requested-With": "XMLHttpRequest"
     },
       success: function(data) {
-        console.log("login ajax successful");
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_SUCCESS,
             showLoading: false, 
             name: name, 
             email: email, 
-            registerationStatus: "Successful"
+            LoginStatus: "Successful",
+            response:data
           });
       }.bind(this),
 
@@ -84,7 +84,7 @@ var UserActions = {
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_FAIL,
             showLoading: false, 
-            errorMsg: err.toString()
+            response: err.toString()
           });
       }.bind(this)
     });

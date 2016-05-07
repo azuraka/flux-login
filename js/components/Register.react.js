@@ -3,10 +3,16 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var UserStore = require('../stores/UserStore');
 
+function seterror(){
+  return{
+    error: UserStore.errorMsg()
+  };
+}
+
 var Register = React.createClass({
 
   getInitialState: function() {
-    return {name: '', email: '', passwd: '', confm_passwd: ''};
+    return {name: '', email: '', passwd: '', confm_passwd: '', error:''};
   },
   componentDidMount: function() {
     UserStore.addChangeListener(this._onChange2);
@@ -41,6 +47,7 @@ var Register = React.createClass({
             <button id="register" type="button" onClick={this._onSubmit}>Register</button>
           </div>
         </form>
+        <div>{this.state.error}</div>
       </div>
     );
   },
@@ -68,7 +75,7 @@ var Register = React.createClass({
   },
 
   _onChange2: function() {
-    console.log("Change Detected");
+    this.setState(seterror());
   }
 
 
