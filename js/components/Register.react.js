@@ -8,7 +8,6 @@ var Register = React.createClass({
     return {email: '', passwd: '', confm_passwd: ''};
   },
 
-
   render: function() {
     return (
       <div>
@@ -27,7 +26,7 @@ var Register = React.createClass({
             <label htmlFor="confm_passwd">Confirm Password</label>
           </div>
           <div>
-            <button id="register" onclick="this._onSubmit">Register</button>
+            <button id="register" type="button" onClick={this._onSubmit}>Register</button>
           </div>
         </form>
       </div>
@@ -46,10 +45,10 @@ var Register = React.createClass({
   _onSubmit: function(event, id) {
     event.preventDefault();
     if(event.target.id=="register") {
-      if (this.state.passwd==this.state.confm_passwd && this.state.email)
-        console.log("successful");
+      if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd) 
+        console.log("register successful");
       else
-        console.log("failed");
+        console.log("register failed");
     }
   } 
 
