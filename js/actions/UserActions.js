@@ -29,7 +29,6 @@ var UserActions = {
       success: function(data) {
         AppDispatcher.dispatch({
           actionType: UserConstants.USER_REGISTER_SUCCESS,
-          showLoading: false,
           name: name,
           email: email,
           registerationStatus: "Successful",
@@ -41,7 +40,6 @@ var UserActions = {
         console.error(this.props.url, status, err.toString());
         AppDispatcher.dispatch({
           actionType: UserConstants.USER_REGISTER_FAIL,
-          showLoading: false,
           response: err.toString()
         });
       }.bind(this)
@@ -72,7 +70,6 @@ var UserActions = {
       success: function(data) {
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_SUCCESS,
-            showLoading: false,
             name: name,
             email: email,
             LoginStatus: "Successful",
@@ -84,7 +81,6 @@ var UserActions = {
         console.error(this.props.url, status, err.toString());
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_FAIL,
-            showLoading: false,
             response: err.toString()
           });
       }.bind(this)

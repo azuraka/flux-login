@@ -8,7 +8,7 @@ var CHANGE_EVENT = 'change';
 var error = '';
 
 function create_error(status, errorText) {
-  
+
   if (status=="error")
     error = errorText;
   else if(status=="success")
@@ -39,10 +39,6 @@ var UserStore = assign({}, EventEmitter.prototype, {
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
-    case UserConstants.USER_REGISTER:
-      // Do something
-      UserStore.emitChange();
-      break;
     case UserConstants.USER_REGISTER_SUCCESS:
       console.log(action.response);
       create_error(action.response['status'], action.response['message']);
@@ -62,10 +58,6 @@ AppDispatcher.register(function(action) {
       break;
 
 
-    case UserConstants.USER_LOGIN:
-      // Again do something
-      UserStore.emitChange();
-      break;
     case UserConstants.USER_LOGIN_SUCCESS:
       create_error(action.response['status'], action.response['message']);
       // Again do something
