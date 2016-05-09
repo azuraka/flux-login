@@ -85,6 +85,49 @@ var UserActions = {
           });
       }.bind(this)
     });
+  },
+
+  UserUpload: function(fileObj) {
+    
+    AppDispatcher.dispatch({
+      actionType: UserConstants.FILE_UPLOAD_LOADING,
+      response: "uploading"
+    });
+
+    //console.log(fileObj);
+
+    var fileData = new FormData();
+    fileData.append("document", fileObj);
+    fileData.append("title","");
+    $.ajax({
+      type: 'POST',
+      data: fileData,
+      url: "http://docx.8finatics.com/user/document",
+      cache: false,
+      processData: false,
+      contentType: false,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
+    },
+      success: function(data) {
+          //console.log(data);
+          AppDispatcher.dispatch({
+            actionType: UserConstants.FILE_UPLOAD_SUCCESS,
+            UploadStatus: "Successful",
+            response:data
+          });
+      }.bind(this),
+
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+          AppDispatcher.dispatch({
+            actionType: UserConstants.FILE_UPLOAD_FAIL,
+            response: err.toString()
+          });
+      }.bind(this)
+    });
+
   }
 };
 
