@@ -68,6 +68,13 @@ AppDispatcher.register(function(action) {
       create_error(action.response['status'], action.response['message']);
       // Again do something
       console.log(action.response);
+      
+      UserStore.emitChange();
+      break;
+    case UserConstants.USER_LOGIN_LOADING:
+      console.log(action.response);
+      create_error(action.response['status'], action.response['message']);
+      // Do another something
       UserStore.emitChange();
       break;
     default:
