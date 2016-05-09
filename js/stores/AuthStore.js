@@ -20,7 +20,7 @@ function create_error(status, errorText) {
 }
 
 
-var UserStore = assign({}, EventEmitter.prototype, {
+var AuthStore = assign({}, EventEmitter.prototype, {
   errorMsg: function() {
     return error;
   },
@@ -42,19 +42,19 @@ AppDispatcher.register(function(action) {
     case UserConstants.USER_REGISTER_SUCCESS:
       console.log(action.response);
       create_error(action.response['status'], action.response['message']);
-      UserStore.emitChange();
+      AuthStore.emitChange();
       break;
     case UserConstants.USER_REGISTER_FAIL:
       console.log(action.response);
       create_error(action.response['status'], action.response['message']);
       // Do another something
-      UserStore.emitChange();
+      AuthStore.emitChange();
       break;
     case UserConstants.USER_REGISTER_LOADING:
       console.log(action.response);
       create_error(action.response['status'], action.response['message']);
       // Do another something
-      UserStore.emitChange();
+      AuthStore.emitChange();
       break;
 
 
@@ -62,20 +62,20 @@ AppDispatcher.register(function(action) {
       create_error(action.response['status'], action.response['message']);
       // Again do something
       console.log(action.response);
-      UserStore.emitChange();
+      AuthStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_FAIL:
       create_error(action.response['status'], action.response['message']);
       // Again do something
       console.log(action.response);
-      
-      UserStore.emitChange();
+
+      AuthStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_LOADING:
       console.log(action.response);
       create_error(action.response['status'], action.response['message']);
       // Do another something
-      UserStore.emitChange();
+      AuthStore.emitChange();
       break;
     default:
       // no op
@@ -83,4 +83,4 @@ AppDispatcher.register(function(action) {
   }
 });
 
-module.exports = UserStore;
+module.exports = AuthStore;

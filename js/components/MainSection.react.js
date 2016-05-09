@@ -3,11 +3,11 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var Register = require('./Register.react');
 var Login = require('./Login.react');
-var UserStore = require('../stores/UserStore');
+var AuthStore = require('../stores/AuthStore');
 
 function seterror(){
   return{
-    error: UserStore.errorMsg()
+    error: AuthStore.errorMsg()
   };
 }
 
@@ -17,11 +17,11 @@ var MainSection = React.createClass({
   },
 
   componentDidMount: function() {
-    UserStore.addChangeListener(this._onChange2);
+    AuthStore.addChangeListener(this._onChange2);
   },
 
   componentWillUnmount: function() {
-    UserStore.removeChangeListener(this._onChange2);
+    AuthStore.removeChangeListener(this._onChange2);
   },
 
   render: function() {

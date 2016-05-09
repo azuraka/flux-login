@@ -1,6 +1,6 @@
 var MainSection = require('./MainSection.react');
 var React = require('react');
-//var UserStore = require('../stores/UserStore');
+//var AuthStore = require('../stores/AuthStore');
 
 var UserApp = React.createClass({
   render: function() {

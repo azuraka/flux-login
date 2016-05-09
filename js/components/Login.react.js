@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
-var UserStore = require('../stores/UserStore');
+var AuthStore = require('../stores/AuthStore');
 
 var Login = React.createClass({
 
@@ -10,11 +10,11 @@ var Login = React.createClass({
   },
 
   componentDidMount: function() {
-    UserStore.addChangeListener(this._onChange2);
+    AuthStore.addChangeListener(this._onChange2);
   },
 
   componentWillUnmount: function() {
-    UserStore.removeChangeListener(this._onChange2);
+    AuthStore.removeChangeListener(this._onChange2);
   },
 
 

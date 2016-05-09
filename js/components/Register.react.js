@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
-var UserStore = require('../stores/UserStore');
+var AuthStore = require('../stores/AuthStore');
 
 
 var Register = React.createClass({
@@ -10,11 +10,11 @@ var Register = React.createClass({
     return {name: '', email: '', passwd: '', confm_passwd: ''};
   },
   componentDidMount: function() {
-    UserStore.addChangeListener(this._onChange2);
+    AuthStore.addChangeListener(this._onChange2);
   },
 
   componentWillUnmount: function() {
-    UserStore.removeChangeListener(this._onChange2);
+    AuthStore.removeChangeListener(this._onChange2);
   },
 
   render: function() {
@@ -60,7 +60,7 @@ var Register = React.createClass({
   _onSubmit: function(event, id) {
     event.preventDefault();
     if(event.target.id=="register") {
-      if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd && this.state.name){ 
+      if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd && this.state.name){
         UserActions.UserRegister(this.state.name, this.state.email, this.state.passwd);
       }
       else
