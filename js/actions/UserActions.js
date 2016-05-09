@@ -75,6 +75,12 @@ var UserActions = {
             LoginStatus: "Successful",
             response:data
           });
+          AppDispatcher.dispatch({
+            actionType: UserConstants.USER_INFO,
+            response:data
+          });
+
+
       }.bind(this),
 
       error: function(xhr, status, err) {

@@ -3,7 +3,11 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var Register = require('./Register.react');
 var Login = require('./Login.react');
+var UserInfo = require('./UserInfo.react');
+var DocumentVault = require('./DocumentVault.react');
 var AuthStore = require('../stores/AuthStore');
+var UserInfoStore = require('../stores/UserInfoStore');
+var AllDocumentStore = require('../stores/AllDocumentStore');
 
 function seterror(){
   return{
@@ -30,6 +34,8 @@ var MainSection = React.createClass({
         <h1>Welcome</h1>
         <Register />
         <Login />
+        <UserInfo />
+        <DocumentVault />
         <div>{this.state.error}</div>
       </div>
     );
