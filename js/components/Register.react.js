@@ -70,9 +70,6 @@ var Register = React.createClass({
 
   _onChange2: function() {
   }
-
-
-
 });
 
 module.exports = Register;

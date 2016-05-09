@@ -3,11 +3,13 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var Register = require('./Register.react');
 var Login = require('./Login.react');
+var UploadDoc = require('./UploadDoc.react');
 var UserInfo = require('./UserInfo.react');
 var DocumentVault = require('./DocumentVault.react');
 var AuthStore = require('../stores/AuthStore');
 var UserInfoStore = require('../stores/UserInfoStore');
 var AllDocumentStore = require('../stores/AllDocumentStore');
+var UserStore = require('../stores/UserStore');
 
 function seterror(){
   return{
@@ -17,7 +19,7 @@ function seterror(){
 
 var MainSection = React.createClass({
   getInitialState: function() {
-    return {error:''};
+    return {error:'', name:''};
   },
 
   componentDidMount: function() {
@@ -31,12 +33,13 @@ var MainSection = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>Welcome</h1>
+        <h1>Welcome {this.state.name}</h1>
         <Register />
         <Login />
         <UserInfo />
         <DocumentVault />
         <div>{this.state.error}</div>
+        <UploadDoc />
       </div>
     );
   },
