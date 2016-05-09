@@ -4,16 +4,17 @@ var UserConstants = require('../constants/UserConstants');
 var UserActions = {
 
   UserRegister: function(name, email, password) {
+
     AppDispatcher.dispatch({
-      actionType: UserConstants.USER_REGISTER,
-      name: name,
-      email: email,
-      password: password
+      actionType: UserConstants.USER_REGISTER_LOADING,
+      response: "loading"
     });
+
+
 
 // Input: {‘email’, ‘name’, ‘password’}
 // Output: {‘status’, ‘message’, ‘data’: User details including id}
-    
+
     var registerData = {email, name, password}
 
     $.ajax({
@@ -28,9 +29,9 @@ var UserActions = {
       success: function(data) {
         AppDispatcher.dispatch({
           actionType: UserConstants.USER_REGISTER_SUCCESS,
-          showLoading: false, 
-          name: name, 
-          email: email, 
+          showLoading: false,
+          name: name,
+          email: email,
           registerationStatus: "Successful",
           response:data
         });
@@ -51,11 +52,11 @@ var UserActions = {
 // Output: {‘status’, ‘message’, ‘data’: User details}
 
   UserLogin: function(email, password) {
-  	AppDispatcher.dispatch({
-      actionType: UserConstants.USER_LOGIN,
-      email: email,
-      password: password
-    });
+
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_LOGIN_LOADING,
+          response: "loading"
+        });
 
     var loginData = {email, password}
 
@@ -71,9 +72,9 @@ var UserActions = {
       success: function(data) {
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_SUCCESS,
-            showLoading: false, 
-            name: name, 
-            email: email, 
+            showLoading: false,
+            name: name,
+            email: email,
             LoginStatus: "Successful",
             response:data
           });
@@ -83,7 +84,7 @@ var UserActions = {
         console.error(this.props.url, status, err.toString());
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_FAIL,
-            showLoading: false, 
+            showLoading: false,
             response: err.toString()
           });
       }.bind(this)

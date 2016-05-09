@@ -8,11 +8,17 @@ var CHANGE_EVENT = 'change';
 var error = '';
 
 function create_error(status, errorText) {
+  
   if (status=="error")
     error = errorText;
-  else
-    error = "Success"
+  else if(status=="success")
+  {
+    error = "Success";
+  }else{
+    error = "Loading ...";
+  }
 }
+
 
 var UserStore = assign({}, EventEmitter.prototype, {
   errorMsg: function() {
@@ -48,6 +54,14 @@ AppDispatcher.register(function(action) {
       // Do another something
       UserStore.emitChange();
       break;
+    case UserConstants.USER_REGISTER_LOADING:
+      console.log(action.response);
+      create_error(action.response['status'], action.response['message']);
+      // Do another something
+      UserStore.emitChange();
+      break;
+
+
     case UserConstants.USER_LOGIN:
       // Again do something
       UserStore.emitChange();
