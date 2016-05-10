@@ -28,15 +28,17 @@ var DocumentVault = React.createClass({
         <h4>Uploaded By Me</h4>
         <DocumentList documents={this.state.uploaded_by_me_data} />
         <h4>Shared By Others</h4>
+        <DocumentList documents={this.state.shared_by_others} />
       </div>
     );
   },
 
   _onChange: function() {
-    var data = AllDocumentStore.get_all_documents();
-
+    var data_uploaded_by_me = AllDocumentStore.get_docs_uploaded_by_me();
+    // var data_shared_by_others = AllDocumentStore.get_docs_shared_by_others();
     this.setState({
-      uploaded_by_me_data : data
+      uploaded_by_me_data : data_uploaded_by_me,
+      // shared_by_others : data_shared_by_others
     });
   },
 

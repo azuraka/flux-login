@@ -1,8 +1,8 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var UserConstants = require('../constants/UserConstants');
-
-
-
+var RequestsConstants = require('../constants/RequestsConstants');
+// To be removed :Sahil
+var userID;
 
 function ajaxRequest(url, method, data, onSuccess, onFailure) {
     $.ajax({
@@ -97,6 +97,7 @@ var UserActions = {
         "X-Requested-With": "XMLHttpRequest"
     },
       success: function(data) {
+        userID = data.data.id;
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_SUCCESS,
             name: name,
@@ -118,6 +119,29 @@ var UserActions = {
             });
           });
 
+          // Call for getting requests pending on others
+          ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
+            AppDispatcher.dispatch({
+              actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
+              response: data
+            });
+          });
+
+          // Call for getting requests pending on me
+          ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_signs","GET",null,function (data) {
+            AppDispatcher.dispatch({
+              actionType: RequestsConstants.REQUESTS_PENDING_ON_ME,
+              response: data
+            });
+          });
+
+          // Call for getting completed requests
+          ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/completed_requests","GET",null,function (data) {
+            AppDispatcher.dispatch({
+              actionType: RequestsConstants.REQUESTS_COMPLETED,
+              response: data
+            });
+          });
       }.bind(this),
 
 

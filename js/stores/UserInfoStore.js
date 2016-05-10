@@ -43,7 +43,7 @@ var UserInfoStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
     case UserConstants.USER_INFO:
-      console.log(action.response);
+      // console.log(action.response);
       update_user(action.response['data']);
       UserInfoStore.emitChange();
       break;

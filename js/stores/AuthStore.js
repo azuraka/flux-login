@@ -61,7 +61,7 @@ AppDispatcher.register(function(action) {
     case UserConstants.USER_LOGIN_SUCCESS:
       create_error(action.response['status'], action.response['message']);
       // Again do something
-      console.log(action.response);
+      // console.log(action.response);
       AuthStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_FAIL:
@@ -72,7 +72,7 @@ AppDispatcher.register(function(action) {
       AuthStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_LOADING:
-      console.log(action.response);
+      // console.log(action.response);
       create_error(action.response['status'], action.response['message']);
       // Do another something
       AuthStore.emitChange();
