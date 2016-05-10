@@ -6,7 +6,7 @@ var AuthStore = require('../stores/AuthStore');
 var Login = React.createClass({
 
    getInitialState: function() {
-    return {email: '', passwd: ''};
+    return {email: '', passwd: '', status: '', display: 1};
   },
 
   componentDidMount: function() {
@@ -35,6 +35,7 @@ var Login = React.createClass({
             <button id="login" type="button" onClick={this._onSubmit}>Login</button>
           </div>
         </form>
+        <div>{this.state.status}</div>
       </div>
     );
   },
@@ -52,15 +53,12 @@ var Login = React.createClass({
       if (this.state.passwd && this.state.email){
         UserActions.UserLogin(this.state.email, this.state.passwd);
       }
-      else
-        console.log("login failed");
     }
   },
 
   _onChange2: function() {
+    this.setState({status: AuthStore.statusMsgLog()});
   }
-
-
 });
 
 module.exports = Login;

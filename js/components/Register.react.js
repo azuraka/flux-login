@@ -3,18 +3,18 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var AuthStore = require('../stores/AuthStore');
 
-
 var Register = React.createClass({
 
   getInitialState: function() {
-    return {name: '', email: '', passwd: '', confm_passwd: ''};
+    return {name: '', email: '', passwd: '', confm_passwd: '', status: '', display: 1};
   },
+
   componentDidMount: function() {
-    AuthStore.addChangeListener(this._onChange2);
+    AuthStore.addChangeListener(this._onChangeState);
   },
 
   componentWillUnmount: function() {
-    AuthStore.removeChangeListener(this._onChange2);
+    AuthStore.removeChangeListener(this._onChangeState);
   },
 
   render: function() {
@@ -42,6 +42,7 @@ var Register = React.createClass({
             <button id="register" type="button" onClick={this._onSubmit}>Register</button>
           </div>
         </form>
+        <div>{this.state.status}</div>
       </div>
     );
   },
@@ -63,12 +64,11 @@ var Register = React.createClass({
       if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd && this.state.name){
         UserActions.UserRegister(this.state.name, this.state.email, this.state.passwd);
       }
-      else
-        console.log("Registration Failed !");
     }
   },
 
-  _onChange2: function() {
+  _onChangeState: function() {
+    this.setState({status: AuthStore.statusMsgReg()});
   }
 });
 

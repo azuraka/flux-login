@@ -58,10 +58,7 @@ var UserActions = {
       success: function(data) {
         AppDispatcher.dispatch({
           actionType: UserConstants.USER_REGISTER_SUCCESS,
-          name: name,
-          email: email,
-          registerationStatus: "Successful",
-          response:data
+          response:data['message']
         });
       }.bind(this),
 
@@ -80,10 +77,10 @@ var UserActions = {
 
   UserLogin: function(email, password) {
 
-        AppDispatcher.dispatch({
-          actionType: UserConstants.USER_LOGIN_LOADING,
-          response: "loading ..."
-        });
+    AppDispatcher.dispatch({
+      actionType: UserConstants.USER_LOGIN_LOADING,
+      response: "loading ..."
+    });
 
     var loginData = {email, password}
 
@@ -99,16 +96,13 @@ var UserActions = {
       success: function(data) {
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_SUCCESS,
-            name: name,
-            email: email,
-            LoginStatus: "Successful",
-            response:data
+            response: data['message']
           });
+
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_INFO,
             response:data
           });
-
 
           // Call for getting all docs
           ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
@@ -220,7 +214,7 @@ var UserActions = {
       response: "signing doc ..."
     });
 
-    
+
   }
 };
 
