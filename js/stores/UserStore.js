@@ -37,24 +37,30 @@ function onSuccess(json) {
   json['image_paths'].forEach(function(url){
     imgList.push("http://docx.8finatics.com/" + url);
   });
-  //console.log(imgList);
 }
 
 function onFailure() {
 }
 
 
-function create_imgList(responseObject) {
-  msg = responseObject['message'];
-  data = responseObject['data'];
+function create_imgList(responseObjectData) {
+  data = responseObjectData;
   all_img_url = "http://docx.8finatics.com/document/" + data['uuid'] + "/" + data['state_id'] + "/images";
   ajaxRequest(all_img_url,"GET",null,onSuccess,onFailure);
 }
 
+function create_status(responseObjectMessage) {
+  msg = responseObjectMessage;
+}
+
 var UserStore = assign({}, EventEmitter.prototype, {
   setImageList: function() {
-    //console.log(imgList);
-    return [msg,imgList];
+    console.log(imgListString);
+    return imgList;
+  },
+
+  setStatus: function() {
+    return msg;
   },
 
   emitChange: function() {
@@ -72,16 +78,16 @@ var UserStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
     case UserConstants.FILE_UPLOAD_LOADING:
-      console.log(action.response);
+      create_status(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.FILE_UPLOAD_SUCCESS:
-      //console.log(action.response);
-      create_imgList(action.response[0]);
+      create_imgList(action.response[0]['data']);
+      create_status(action.response[0]['message']);
       UserStore.emitChange();
       break;
     case UserConstants.FILE_UPLOAD_FAIL:
-      //console.log(action.response);
+      create_status(action.response);
       UserStore.emitChange();
       break;
     default:

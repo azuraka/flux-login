@@ -97,10 +97,8 @@ var UserActions = {
     
     AppDispatcher.dispatch({
       actionType: UserConstants.FILE_UPLOAD_LOADING,
-      response: "uploading"
+      response: "uploading ..."
     });
-
-    //console.log(fileObj);
 
     var fileData = new FormData();
     fileData.append("document", fileObj);
@@ -117,10 +115,8 @@ var UserActions = {
         "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
     },
       success: function(data) {
-          //console.log(data);
           AppDispatcher.dispatch({
             actionType: UserConstants.FILE_UPLOAD_SUCCESS,
-            UploadStatus: "Successful",
             response:data
           });
       }.bind(this),
