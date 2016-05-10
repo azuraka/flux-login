@@ -3,45 +3,46 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var AuthStore = require('../stores/AuthStore');
 
-
 var Register = React.createClass({
 
   getInitialState: function() {
-    return {name: '', email: '', passwd: '', confm_passwd: ''};
+    return {name: '', email: '', passwd: '', confm_passwd: '', status: '', display: 1};
   },
+
   componentDidMount: function() {
-    AuthStore.addChangeListener(this._onChange2);
+    AuthStore.addChangeListener(this._onChangeState);
   },
 
   componentWillUnmount: function() {
-    AuthStore.removeChangeListener(this._onChange2);
+    AuthStore.removeChangeListener(this._onChangeState);
   },
 
   render: function() {
     return (
       <div>
-        <h4>Register Account</h4>
+        <h2>Register Account</h2>
         <form>
           <div>
-            <input id="name" type="text" value={this.state.name} onChange={this._onChange}/>
             <label htmlFor="name">Name</label>
+            <input id="name" type="text" value={this.state.name} onChange={this._onChange}/>
           </div>
           <div>
-            <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
             <label htmlFor="email">Email</label>
+            <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
           </div>
           <div>
-            <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
             <label htmlFor="passwd">Password</label>
+            <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
           </div>
           <div>
-            <input id="confm_passwd" type="password" value={this.state.confm_passwd} onChange={this._onChange}/>
             <label htmlFor="confm_passwd">Confirm Password</label>
+            <input id="confm_passwd" type="password" value={this.state.confm_passwd} onChange={this._onChange}/>
           </div>
           <div>
             <button id="register" type="button" onClick={this._onSubmit}>Register</button>
           </div>
         </form>
+        <div>{this.state.status}</div>
       </div>
     );
   },
@@ -63,12 +64,11 @@ var Register = React.createClass({
       if (this.state.passwd==this.state.confm_passwd && this.state.email && this.state.passwd && this.state.confm_passwd && this.state.name){
         UserActions.UserRegister(this.state.name, this.state.email, this.state.passwd);
       }
-      else
-        console.log("Registration Failed !");
     }
   },
 
-  _onChange2: function() {
+  _onChangeState: function() {
+    this.setState({status: AuthStore.statusMsgReg()});
   }
 });
 

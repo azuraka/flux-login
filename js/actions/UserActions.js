@@ -36,7 +36,7 @@ var UserActions = {
 
     AppDispatcher.dispatch({
       actionType: UserConstants.USER_REGISTER_LOADING,
-      response: "loading"
+      response: "loading ..."
     });
 
 
@@ -58,10 +58,7 @@ var UserActions = {
       success: function(data) {
         AppDispatcher.dispatch({
           actionType: UserConstants.USER_REGISTER_SUCCESS,
-          name: name,
-          email: email,
-          registerationStatus: "Successful",
-          response:data
+          response:data['message']
         });
       }.bind(this),
 
@@ -80,10 +77,10 @@ var UserActions = {
 
   UserLogin: function(email, password) {
 
-        AppDispatcher.dispatch({
-          actionType: UserConstants.USER_LOGIN_LOADING,
-          response: "loading"
-        });
+    AppDispatcher.dispatch({
+      actionType: UserConstants.USER_LOGIN_LOADING,
+      response: "loading ..."
+    });
 
     var loginData = {email, password}
 
@@ -100,16 +97,13 @@ var UserActions = {
         userID = data.data.id;
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_LOGIN_SUCCESS,
-            name: name,
-            email: email,
-            LoginStatus: "Successful",
-            response:data
+            response: data['message']
           });
+
           AppDispatcher.dispatch({
             actionType: UserConstants.USER_INFO,
             response:data
           });
-
 
           // Call for getting all docs
           ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
@@ -192,7 +186,62 @@ var UserActions = {
       }.bind(this)
     });
 
+  },
+
+  SendLinkAadharOTP: function(aadharNum) {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.LINK_AADHAR_OTP_SENDING,
+      response: "sending otp ..."
+    });
+
+    var aadharData = {
+       aadhaar_number: aadharNum,
+       resend: true
+    };
+    if (aadharNum.length == 12) {
+       //if (aadharNum.trim() !== '' && aadharNum.verhoeffCheck() === true)
+           ajaxRequest('http://docx.8finatics.com/user/ekyc/register/otp', 'POST', aadharData, aadhaar_ekyc_resend_result);
+    }
+    function aadhaar_ekyc_resend_result(json) {
+      AppDispatcher.dispatch({
+        actionType: UserConstants.LINK_AADHAR_OTP_SENT,
+        response: json['message']
+      });
+      //console.log(json['message']);
+    }
+  },
+
+  VerifyLinkAadharOTP: function(aadharNum, input_otp) {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.LINK_AADHAR_OTP_VERIFYING,
+      response: "verifying otp ..."
+    });
+
+    var OTPData = {
+           aadhaar_number: aadharNum,
+           otp: input_otp
+       };
+       ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, aadhaar_ekyc_otp_result);
+
+    function aadhaar_ekyc_otp_result(json) {
+      AppDispatcher.dispatch({
+        actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
+        response: json['message']
+      });
+      //console.log(json);
+    }  
+  },
+
+  SignDoc: function() {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.DOC_SIGNING,
+      response: "signing doc ..."
+    });
+
+
   }
 };
+
+
 
 module.exports = UserActions;
