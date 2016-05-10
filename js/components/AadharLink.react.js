@@ -3,19 +3,25 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var UserStore = require('../stores/UserStore');
 
+function setStatus(){
+  return{
+    status: UserStore.setStatus()
+  };
+}
+
 var AadharLink = React.createClass({
 
   getInitialState: function() {
-    return {is_user_auth:0, aadharNum:'', input_otp:''};
+    return {is_user_auth:0, aadharNum:'', input_otp:'', status:''};
   },
   
-//  componentDidMount: function() {
-//    UserStore.addChangeListener(this._onChange2);
-//  },
+  componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange2);
+  },
 
-//  componentWillUnmount: function() {
-//    UserStore.removeChangeListener(this._onChange2);
-//  },
+  componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange2);
+  },
 
   render: function() {
     return (
@@ -40,6 +46,7 @@ var AadharLink = React.createClass({
             <button id="resendOTP" type="button" onClick={this._onSubmit}>Resend OTP</button>
           </div>
         </form>
+        <div>{this.state.status}</div>
       </div>
         
     );
@@ -60,6 +67,10 @@ var AadharLink = React.createClass({
     else if(event.target.id=="verifyOTP") {
       UserActions.VerifyLinkAadharOTP(this.state.aadharNum, this.state.input_otp);
     }
+  },
+
+  _onChange2: function() {
+    this.setState(setStatus());
   }
 
 });

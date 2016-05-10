@@ -185,7 +185,11 @@ var UserActions = {
            ajaxRequest('http://docx.8finatics.com/user/ekyc/register/otp', 'POST', aadharData, aadhaar_ekyc_resend_result);
     }
     function aadhaar_ekyc_resend_result(json) {
-      console.log(json);
+      AppDispatcher.dispatch({
+        actionType: UserConstants.LINK_AADHAR_OTP_SENT,
+        response: json['message']
+      });
+      //console.log(json['message']);
     }
   },
 
@@ -202,9 +206,21 @@ var UserActions = {
        ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, aadhaar_ekyc_otp_result);
 
     function aadhaar_ekyc_otp_result(json) {
-      console.log(json);
+      AppDispatcher.dispatch({
+        actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
+        response: json['message']
+      });
+      //console.log(json);
     }  
+  },
 
+  SignDoc: function() {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.DOC_SIGNING,
+      response: "signing doc ..."
+    });
+
+    
   }
 };
 

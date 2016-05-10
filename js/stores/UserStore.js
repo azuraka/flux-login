@@ -39,10 +39,7 @@ function onSuccess(json) {
     imgList.push("http://docx.8finatics.com/" + url);
   });
   create_imgList(null, imgList);
-  //console.log(imgList);
-}
-
-function onFailure() {
+  console.log(imgList);
 }
 
 
@@ -50,7 +47,7 @@ function create_imgList(responseObjectData, outputData) {
   if (!outputData){
     data = responseObjectData;
     all_img_url = "http://docx.8finatics.com/document/" + data['uuid'] + "/" + data['state_id'] + "/images";
-    ajaxRequest(all_img_url,"GET",null,onSuccess,onFailure);
+    ajaxRequest(all_img_url,"GET",null,onSuccess);
   }
   else{
     //console.log(outputData);
@@ -64,7 +61,6 @@ function create_status(responseObjectMessage) {
 
 var UserStore = assign({}, EventEmitter.prototype, {
   setImageList: function(imgList) {
-    console.log(imgList);
     return imgList;
   },
 
@@ -99,6 +95,23 @@ AppDispatcher.register(function(action) {
       create_status(action.response);
       UserStore.emitChange();
       break;
+    case UserConstants.LINK_AADHAR_OTP_SENDING:
+      create_status(action.response);
+      UserStore.emitChange();
+      break;
+    case UserConstants.LINK_AADHAR_OTP_SENT:
+      create_status(action.response);
+      UserStore.emitChange();
+      break;
+    case UserConstants.LINK_AADHAR_OTP_VERIFYING:
+      create_status(action.response);
+      UserStore.emitChange();
+      break;
+    case UserConstants.LINK_AADHAR_OTP_VERIFIED:
+      create_status(action.response);
+      UserStore.emitChange();
+      break;
+
     default:
       // no op
   }
