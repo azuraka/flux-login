@@ -21,15 +21,15 @@ var Login = React.createClass({
   render: function() {
     return (
       <div>
-        <h4>Login</h4>
+        <h2>Login</h2>
         <form>
           <div>
-            <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
             <label htmlFor="email">Email</label>
+            <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
           </div>
           <div>
-            <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
             <label htmlFor="passwd">Password</label>
+            <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
           </div>
           <div>
             <button id="login" type="button" onClick={this._onSubmit}>Login</button>

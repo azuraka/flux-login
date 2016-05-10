@@ -2,6 +2,7 @@ var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var UserStore = require('../stores/UserStore');
+var AadharLink = require('./AadharLink.react');
 
 function setStatusAndImageList(){
   return{
@@ -37,10 +38,8 @@ var UploadDoc = React.createClass({
         <div>{this.state.imgsrc_list}</div>
         <h4>Preview of Uploaded Document</h4>
         <img id="temp" src="http://docx.8finatics.com/doc_image/69a44890-1675-11e6-8255-029616a1ba6b_210_1.png"></img>
-        <div>
-            <button id="sign" type="button" onClick={this._onSign}>Link OTP</button>
-        </div>
-        <img id="doc1" src="http://docx.8finatics.com/doc_image/69a44890-1675-11e6-8255-029616a1ba6b_210_1.png" onClick={this._onSign}></img>
+        <AadharLink />
+        <img id="doc1" src="http://docx.8finatics.com/doc_image/69a44890-1675-11e6-8255-029616a1ba6b_210_1.png" onMouseOver={this._onSign}></img>
       </div>
         
     );

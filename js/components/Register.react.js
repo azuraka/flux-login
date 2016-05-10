@@ -20,23 +20,23 @@ var Register = React.createClass({
   render: function() {
     return (
       <div>
-        <h4>Register Account</h4>
+        <h2>Register Account</h2>
         <form>
           <div>
-            <input id="name" type="text" value={this.state.name} onChange={this._onChange}/>
             <label htmlFor="name">Name</label>
+            <input id="name" type="text" value={this.state.name} onChange={this._onChange}/>
           </div>
           <div>
-            <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
             <label htmlFor="email">Email</label>
+            <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
           </div>
           <div>
-            <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
             <label htmlFor="passwd">Password</label>
+            <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
           </div>
           <div>
-            <input id="confm_passwd" type="password" value={this.state.confm_passwd} onChange={this._onChange}/>
             <label htmlFor="confm_passwd">Confirm Password</label>
+            <input id="confm_passwd" type="password" value={this.state.confm_passwd} onChange={this._onChange}/>
           </div>
           <div>
             <button id="register" type="button" onClick={this._onSubmit}>Register</button>
