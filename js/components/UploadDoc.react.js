@@ -3,37 +3,38 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var UserStore = require('../stores/UserStore');
 
-function setStates(){
-  console.log(UserStore.setImageList()[0]);
+function setStatusAndImageList(){
   return{
-  	status: UserStore.setImageList()[0],
-    imgsrc_list: UserStore.setImageList()[1]
+  	status: UserStore.setStatus(),
+  	imgsrc_list: UserStore.setImageList()
   };
 }
 
 var UploadDoc = React.createClass({
 
   getInitialState: function() {
-    return {is_user_auth:0, fileObj:'', imgsrc_list:'', status:''};
+    return {is_user_auth:0, fileObj:'', imgsrc_list:[], status:''};
   },
   
   componentDidMount: function() {
     UserStore.addChangeListener(this._onChange2);
   },
 
-//  componentWillUnmount: function() {
-//    UserStore.removeChangeListener(this._onChange2);
-//  },
+  componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange2);
+  },
 
   render: function() {
     return (
       <div>
-        <h4>Upload Document</h4>
+        <h3>Upload Document</h3>
         <form>
           <div>
             <input id="filename" type="file" onChange={this._onUpload}/>
           </div>
         </form>
+        <div>{this.state.status}</div>
+        <h4>Converted to Image</h4>
       </div>
     );
   },
@@ -47,10 +48,7 @@ var UploadDoc = React.createClass({
   },
 
   _onChange2: function() {
-    this.setState(setStates());
-    //console.log(this.state.status);
-    //console.log(this.state.imgsrc_list);
-    
+    this.setState(setStatusAndImageList());
   }
 });
 
