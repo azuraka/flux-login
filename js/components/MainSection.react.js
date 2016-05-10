@@ -13,42 +13,19 @@ var AllDocumentStore = require('../stores/AllDocumentStore');
 var UserStore = require('../stores/UserStore');
 var UserStore = require('../stores/SignRequestsStore');
 
-function seterror(){
-  return{
-    error: AuthStore.errorMsg()
-  };
-}
-
 var MainSection = React.createClass({
-  getInitialState: function() {
-    return {error:'', name:''};
-  },
-
-  componentDidMount: function() {
-    AuthStore.addChangeListener(this._onChange2);
-  },
-
-  componentWillUnmount: function() {
-    AuthStore.removeChangeListener(this._onChange2);
-  },
-
   render: function() {
     return (
       <div>
-        <h1>Welcome {this.state.name}</h1>
+        <h1>Welcome</h1>
         <Register />
         <Login />
-        <div>{this.state.error}</div>
         <UserInfo />
         <DocumentVault />
         <RequestsVault />
         <UploadDoc />
       </div>
     );
-  },
-
-  _onChange2: function() {
-    this.setState(seterror());
   }
 });
 
