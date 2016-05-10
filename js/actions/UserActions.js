@@ -1,6 +1,37 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var UserConstants = require('../constants/UserConstants');
 
+
+function set_all_documents_success(data){
+  console.log(data);
+}
+
+function ajaxRequest(url, method, data, onSuccess, onFailure) {
+    $.ajax({
+        headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
+    },
+        url: url,
+        data: data,
+        type: method,
+
+        success: function(json) {
+            if (typeof onSuccess !== 'undefined' && typeof onSuccess === "function") {
+                onSuccess(json);
+            }
+        },
+        error: function(xhr, status, errorThrown) {
+            if (typeof onFailure !== 'undefined' && typeof onFailure === "function") {
+                onFailure();
+            }
+        },
+        complete: function(xhr, status) {
+
+        }
+    });
+}
+
 var UserActions = {
 
   UserRegister: function(name, email, password) {
@@ -81,7 +112,11 @@ var UserActions = {
           });
 
 
+          // Call for getting all docs
+          ajaxRequest("http://docx.8finatics.com/documents","GET",null,set_all_documents_success);
+
       }.bind(this),
+
 
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -94,7 +129,7 @@ var UserActions = {
   },
 
   UserUpload: function(fileObj) {
-    
+
     AppDispatcher.dispatch({
       actionType: UserConstants.FILE_UPLOAD_LOADING,
       response: "uploading"

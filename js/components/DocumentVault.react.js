@@ -38,8 +38,7 @@ var DocumentVault = React.createClass({
     this.setState({
       uploaded_by_me_data : data.uploaded_by_me,
       shared_by_others : data.shared_by_others,
-    }
-    );
+    });
   },
 
 
