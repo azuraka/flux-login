@@ -14,7 +14,7 @@ function set_all_documents(data) {
 }
 
 
-var UserInfoStore = assign({}, EventEmitter.prototype, {
+var AllDocumentStore = assign({}, EventEmitter.prototype, {
   set_all_documents: function() {
     var response = {
       // name : name,

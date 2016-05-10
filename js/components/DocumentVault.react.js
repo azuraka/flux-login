@@ -3,7 +3,7 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var AuthStore = require('../stores/AuthStore');
 var AllDocumentStore = require('../stores/AllDocumentStore');
-var DocumentList = require('./DocumentList.react');
+//var DocumentList = require('./DocumentList.react');
 
 var DocumentVault = React.createClass({
 
@@ -25,9 +25,7 @@ var DocumentVault = React.createClass({
     return (
       <div>
         <h4>Uploaded By Me</h4>
-        <DocumentList data={this.state.uploaded_by_me_data} />
         <h4>Shared By Others</h4>
-        <DocumentList data={this.state.shared_by_others} />
       </div>
     );
   },
