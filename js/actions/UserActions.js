@@ -2,9 +2,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var UserConstants = require('../constants/UserConstants');
 
 
-function set_all_documents_success(data){
-  console.log(data);
-}
+
 
 function ajaxRequest(url, method, data, onSuccess, onFailure) {
     $.ajax({
@@ -113,7 +111,12 @@ var UserActions = {
 
 
           // Call for getting all docs
-          ajaxRequest("http://docx.8finatics.com/documents","GET",null,set_all_documents_success);
+          ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
+            AppDispatcher.dispatch({
+              actionType: UserConstants.USER_ALL_DOCUMENTS,
+              response: data
+            });
+          });
 
       }.bind(this),
 

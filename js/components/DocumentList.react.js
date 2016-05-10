@@ -5,17 +5,13 @@ var AuthStore = require('../stores/AuthStore');
 var AllDocumentStore = require('../stores/AllDocumentStore');
 
 var DocumentList = React.createClass({
-
   render: function() {
-
-   var documents = this.props.data.map(data => {
-       return <div class="row" >{data.id}</div>
+   var documents = this.props.documents.map(documents => {
+       return <div class="row" >{documents.id}</div>
    });
    return <div className='documentList'>{documents}</div>;
 
   },
-
-
 });
 
 module.exports = DocumentList;

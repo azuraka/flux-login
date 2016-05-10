@@ -3,7 +3,7 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var AuthStore = require('../stores/AuthStore');
 var AllDocumentStore = require('../stores/AllDocumentStore');
-//var DocumentList = require('./DocumentList.react');
+var DocumentList = require('./DocumentList.react');
 
 var DocumentVault = React.createClass({
 
@@ -13,6 +13,7 @@ var DocumentVault = React.createClass({
       shared_by_others :[]
     }
   },
+
   componentDidMount: function() {
     AllDocumentStore.addChangeListener(this._onChange);
   },
@@ -25,6 +26,7 @@ var DocumentVault = React.createClass({
     return (
       <div>
         <h4>Uploaded By Me</h4>
+        <DocumentList documents={this.state.uploaded_by_me_data} />
         <h4>Shared By Others</h4>
       </div>
     );
@@ -34,8 +36,7 @@ var DocumentVault = React.createClass({
     var data = AllDocumentStore.get_all_documents();
 
     this.setState({
-      uploaded_by_me_data : data.uploaded_by_me,
-      shared_by_others : data.shared_by_others,
+      uploaded_by_me_data : data
     });
   },
 

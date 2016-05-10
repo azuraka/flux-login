@@ -5,21 +5,16 @@ var assign = require('object-assign');
 
 
 var CHANGE_EVENT = 'change';
-
+var documentList = [];
 
 function set_all_documents(data) {
-  // name = data.name;
-
-
+  documentList = data;
 }
 
 
 var AllDocumentStore = assign({}, EventEmitter.prototype, {
-  set_all_documents: function() {
-    var response = {
-      // name : name,
-    }
-    return response;
+  get_all_documents: function() {
+    return documentList;
   },
   emitChange: function() {
     this.emit(CHANGE_EVENT);
@@ -36,12 +31,9 @@ var AllDocumentStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
     case UserConstants.USER_ALL_DOCUMENTS:
-      // console.log(action.response);
       set_all_documents(action.response['data']);
-      UserInfoStore.emitChange();
+      AllDocumentStore.emitChange();
       break;
-
-
     default:
       // no op
 
