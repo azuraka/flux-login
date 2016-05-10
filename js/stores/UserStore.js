@@ -6,6 +6,7 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var imgList = [];
 var msg = '';
+var imgListString = '';
 
 function ajaxRequest(url, method, data, onSuccess, onFailure) {
     $.ajax({
@@ -37,16 +38,24 @@ function onSuccess(json) {
   json['image_paths'].forEach(function(url){
     imgList.push("http://docx.8finatics.com/" + url);
   });
+  create_imgList(null, imgList);
+  //console.log(imgList);
 }
 
 function onFailure() {
 }
 
 
-function create_imgList(responseObjectData) {
-  data = responseObjectData;
-  all_img_url = "http://docx.8finatics.com/document/" + data['uuid'] + "/" + data['state_id'] + "/images";
-  ajaxRequest(all_img_url,"GET",null,onSuccess,onFailure);
+function create_imgList(responseObjectData, outputData) {
+  if (!outputData){
+    data = responseObjectData;
+    all_img_url = "http://docx.8finatics.com/document/" + data['uuid'] + "/" + data['state_id'] + "/images";
+    ajaxRequest(all_img_url,"GET",null,onSuccess,onFailure);
+  }
+  else{
+    //console.log(outputData);
+    UserStore.setImageList(imgList);
+  }
 }
 
 function create_status(responseObjectMessage) {
@@ -54,8 +63,8 @@ function create_status(responseObjectMessage) {
 }
 
 var UserStore = assign({}, EventEmitter.prototype, {
-  setImageList: function() {
-    console.log(imgListString);
+  setImageList: function(imgList) {
+    console.log(imgList);
     return imgList;
   },
 
@@ -82,7 +91,7 @@ AppDispatcher.register(function(action) {
       UserStore.emitChange();
       break;
     case UserConstants.FILE_UPLOAD_SUCCESS:
-      create_imgList(action.response[0]['data']);
+      create_imgList(action.response[0]['data'], null);
       create_status(action.response[0]['message']);
       UserStore.emitChange();
       break;

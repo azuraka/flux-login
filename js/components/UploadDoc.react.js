@@ -6,7 +6,7 @@ var UserStore = require('../stores/UserStore');
 function setStatusAndImageList(){
   return{
   	status: UserStore.setStatus(),
-  	imgsrc_list: UserStore.setImageList()
+  	imgsrc_list: UserStore.setImageList([])
   };
 }
 
@@ -34,8 +34,15 @@ var UploadDoc = React.createClass({
           </div>
         </form>
         <div>{this.state.status}</div>
-        <h4>Converted to Image</h4>
+        <div>{this.state.imgsrc_list}</div>
+        <h4>Preview of Uploaded Document</h4>
+        <img id="temp" src="http://docx.8finatics.com/doc_image/69a44890-1675-11e6-8255-029616a1ba6b_210_1.png"></img>
+        <div>
+            <button id="sign" type="button" onClick={this._onSign}>Link OTP</button>
+        </div>
+        <img id="doc1" src="http://docx.8finatics.com/doc_image/69a44890-1675-11e6-8255-029616a1ba6b_210_1.png" onClick={this._onSign}></img>
       </div>
+        
     );
   },
   
@@ -46,6 +53,24 @@ var UploadDoc = React.createClass({
       UserActions.UserUpload(this.state.fileObj);
     }
   },
+
+  _onSign: function(event, id) {
+  	event.preventDefault();
+    $(document).ready(function () {
+        $('#doc1').selectAreas({
+          allowResize: true,
+          minSize: [100, 50],
+          onChanged: debugQtyAreas,
+          width: 610,
+          areas: []
+        });
+        
+      });
+
+      function debugQtyAreas (event, id, areas) {
+        console.log(areas.length + " areas", arguments);
+      };
+	},
 
   _onChange2: function() {
     this.setState(setStatusAndImageList());
