@@ -1,34 +1,9 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var UserConstants = require('../constants/UserConstants');
+var Functions = require('../api/Functions');
 var RequestsConstants = require('../constants/RequestsConstants');
 // To be removed :Sahil
 var userID;
-
-function ajaxRequest(url, method, data, onSuccess, onFailure) {
-    $.ajax({
-        headers: {
-        "X-Requested-With": "XMLHttpRequest",
-        "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
-    },
-        url: url,
-        data: data,
-        type: method,
-
-        success: function(json) {
-            if (typeof onSuccess !== 'undefined' && typeof onSuccess === "function") {
-                onSuccess(json);
-            }
-        },
-        error: function(xhr, status, errorThrown) {
-            if (typeof onFailure !== 'undefined' && typeof onFailure === "function") {
-                onFailure();
-            }
-        },
-        complete: function(xhr, status) {
-
-        }
-    });
-}
 
 var UserActions = {
 
@@ -40,36 +15,17 @@ var UserActions = {
     });
 
 
-
 // Input: {‘email’, ‘name’, ‘password’}
 // Output: {‘status’, ‘message’, ‘data’: User details including id}
 
     var registerData = {email, name, password}
-
-    $.ajax({
-      type: 'POST',
-      data: registerData,
-      url: "http://docx.8finatics.com/auth/register",
-      dataType: 'json',
-      cache: false,
-      headers: {
-        "X-Requested-With": "XMLHttpRequest"
-    },
-      success: function(data) {
+    Functions.ajaxRequest("http://docx.8finatics.com/auth/register", 'POST', registerData, onSuccess);
+    function onSuccess(data) {
         AppDispatcher.dispatch({
           actionType: UserConstants.USER_REGISTER_SUCCESS,
           response:data['message']
         });
-      }.bind(this),
-
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-        AppDispatcher.dispatch({
-          actionType: UserConstants.USER_REGISTER_FAIL,
-          response: err.toString()
-        });
-      }.bind(this)
-    });
+      }
   },
 
 // Input: {‘email’, ‘password’}
@@ -83,69 +39,49 @@ var UserActions = {
     });
 
     var loginData = {email, password}
+    Functions.ajaxRequest("http://docx.8finatics.com/auth/login", 'POST', loginData, function (data) {
+      userID = data.data.id;
+      AppDispatcher.dispatch({
+        actionType: UserConstants.USER_LOGIN_SUCCESS,
+        response: data['message']
+      });
 
-    $.ajax({
-      type: 'POST',
-      data: loginData,
-      url: "http://docx.8finatics.com/auth/login",
-      dataType: 'json',
-      cache: false,
-      headers: {
-        "X-Requested-With": "XMLHttpRequest"
-    },
-      success: function(data) {
-        userID = data.data.id;
-          AppDispatcher.dispatch({
-            actionType: UserConstants.USER_LOGIN_SUCCESS,
-            response: data['message']
-          });
+      AppDispatcher.dispatch({
+        actionType: UserConstants.USER_INFO,
+        response:data
+      });
 
-          AppDispatcher.dispatch({
-            actionType: UserConstants.USER_INFO,
-            response:data
-          });
+      // Call for getting all docs
+      Functions.ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_ALL_DOCUMENTS,
+          response: data
+        });
+      });
 
-          // Call for getting all docs
-          ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
-            AppDispatcher.dispatch({
-              actionType: UserConstants.USER_ALL_DOCUMENTS,
-              response: data
-            });
-          });
+      // Call for getting requests pending on others
+      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
+        AppDispatcher.dispatch({
+          actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
+          response: data
+        });
+      });
 
-          // Call for getting requests pending on others
-          ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
-            AppDispatcher.dispatch({
-              actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
-              response: data
-            });
-          });
+      // Call for getting requests pending on me
+      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_signs","GET",null,function (data) {
+        AppDispatcher.dispatch({
+          actionType: RequestsConstants.REQUESTS_PENDING_ON_ME,
+          response: data
+        });
+      });
 
-          // Call for getting requests pending on me
-          ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_signs","GET",null,function (data) {
-            AppDispatcher.dispatch({
-              actionType: RequestsConstants.REQUESTS_PENDING_ON_ME,
-              response: data
-            });
-          });
-
-          // Call for getting completed requests
-          ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/completed_requests","GET",null,function (data) {
-            AppDispatcher.dispatch({
-              actionType: RequestsConstants.REQUESTS_COMPLETED,
-              response: data
-            });
-          });
-      }.bind(this),
-
-
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-          AppDispatcher.dispatch({
-            actionType: UserConstants.USER_LOGIN_FAIL,
-            response: err.toString()
-          });
-      }.bind(this)
+      // Call for getting completed requests
+      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/completed_requests","GET",null,function (data) {
+        AppDispatcher.dispatch({
+          actionType: RequestsConstants.REQUESTS_COMPLETED,
+          response: data
+        });
+      });
     });
   },
 
@@ -200,7 +136,7 @@ var UserActions = {
     };
     if (aadharNum.length == 12) {
        //if (aadharNum.trim() !== '' && aadharNum.verhoeffCheck() === true)
-           ajaxRequest('http://docx.8finatics.com/user/ekyc/register/otp', 'POST', aadharData, aadhaar_ekyc_resend_result);
+           Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/register/otp', 'POST', aadharData, aadhaar_ekyc_resend_result);
     }
     function aadhaar_ekyc_resend_result(json) {
       AppDispatcher.dispatch({
@@ -221,7 +157,7 @@ var UserActions = {
            aadhaar_number: aadharNum,
            otp: input_otp
        };
-       ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, aadhaar_ekyc_otp_result);
+       Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, aadhaar_ekyc_otp_result);
 
     function aadhaar_ekyc_otp_result(json) {
       AppDispatcher.dispatch({
@@ -237,8 +173,6 @@ var UserActions = {
       actionType: UserConstants.DOC_SIGNING,
       response: "signing doc ..."
     });
-
-
   }
 };
 

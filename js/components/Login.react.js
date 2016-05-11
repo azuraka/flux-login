@@ -1,22 +1,20 @@
 var React = require('react');
-var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var AuthStore = require('../stores/AuthStore');
 
 var Login = React.createClass({
 
-   getInitialState: function() {
-    return {email: '', passwd: '', status: '', display: 1};
+  getInitialState: function() {
+    return {display: 1, email: '', passwd: '', status: ''};
   },
 
   componentDidMount: function() {
-    AuthStore.addChangeListener(this._onChange2);
+    AuthStore.addChangeListener(this._onChangeState);
   },
 
   componentWillUnmount: function() {
-    AuthStore.removeChangeListener(this._onChange2);
+    AuthStore.removeChangeListener(this._onChangeState);
   },
-
 
   render: function() {
     return (
@@ -56,7 +54,7 @@ var Login = React.createClass({
     }
   },
 
-  _onChange2: function() {
+  _onChangeState: function() {
     this.setState({status: AuthStore.statusMsgLog()});
   }
 });

@@ -2,44 +2,19 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/UserConstants');
 var assign = require('object-assign');
+var Functions = require('../api/Functions');
 
 var CHANGE_EVENT = 'change';
 var imgList = [];
 var msg = '';
-var imgListString = '';
-
-function ajaxRequest(url, method, data, onSuccess, onFailure) {
-    $.ajax({
-        headers: {
-        "X-Requested-With": "XMLHttpRequest",
-        "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
-    },
-        url: url,
-        data: data,
-        type: method,
-
-        success: function(json) {
-            if (typeof onSuccess !== 'undefined' && typeof onSuccess === "function") {
-                onSuccess(json);
-            }
-        },
-        error: function(xhr, status, errorThrown) {
-            if (typeof onFailure !== 'undefined' && typeof onFailure === "function") {
-                onFailure();
-            }
-        },
-        complete: function(xhr, status) {
-
-        }
-    });
-}
 
 function onSuccess(json) {
-  json['image_paths'].forEach(function(url){
-    imgList.push("http://docx.8finatics.com/" + url);
-  });
-  create_imgList(null, imgList);
-  console.log(imgList);
+  imgList = json;
+  //json['image_paths'].forEach(function(url){
+  //  imgList.push("http://docx.8finatics.com/" + url);
+  //});
+  //create_imgList(null, imgList);
+  //console.log(imgList);
 }
 
 
@@ -47,7 +22,7 @@ function create_imgList(responseObjectData, outputData) {
   if (!outputData){
     data = responseObjectData;
     all_img_url = "http://docx.8finatics.com/document/" + data['uuid'] + "/" + data['state_id'] + "/images";
-    ajaxRequest(all_img_url,"GET",null,onSuccess);
+    Functions.ajaxRequest(all_img_url,"GET",null,onSuccess);
   }
   else{
     //console.log(outputData);
