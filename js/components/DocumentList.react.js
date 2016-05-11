@@ -16,7 +16,7 @@ var DocumentList = React.createClass({
     ];
   });
   return <div className='documentList box_padding left'>{documents}</div>;
-  },
+  }
 });
 
 module.exports = DocumentList;

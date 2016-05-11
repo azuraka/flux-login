@@ -20,13 +20,16 @@ var DisplayImage = React.createClass({
   },
 
   render: function() {
+    var images = this.props.list.map(function(list,i) {
+      return [
+        <div>
+          <img className={'doc' + i} src={list} ></img>
+        </div>
+      ];
+    });
     return (
       <div>
-        <div>{this.props.list}</div>
-        <h4>Preview of Uploaded Document</h4>
-        <div>
-        	<img id="temp" src="http://docx.8finatics.com/doc_image/69a44890-1675-11e6-8255-029616a1ba6b_210_1.png"></img>
-      	</div>
+        {images}
       </div>
     );
   },
