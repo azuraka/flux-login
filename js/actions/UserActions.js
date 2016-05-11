@@ -14,6 +14,7 @@ var UserActions = {
       response: "loading ..."
     });
 
+
 // Input: {‘email’, ‘name’, ‘password’}
 // Output: {‘status’, ‘message’, ‘data’: User details including id}
 

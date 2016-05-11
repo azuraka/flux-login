@@ -35,8 +35,7 @@ AppDispatcher.register(function(action) {
       AllDocumentStore.emitChange();
       break;
     default:
-      // no op
-
+    
   }
 });
 
