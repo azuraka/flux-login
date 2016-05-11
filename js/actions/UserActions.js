@@ -67,6 +67,7 @@ var UserActions = {
       // Call for getting requests pending on others
       Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
         get_profile_info();
+        
         AppDispatcher.dispatch({
           actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
           response: data

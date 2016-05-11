@@ -92,6 +92,7 @@ AppDispatcher.register(function(action) {
       UserInfoStore.emitChange();
       break;
 
+
     default:
       // no op
 
