@@ -1,11 +1,12 @@
 var React = require('react');
+var DisplayImage = require('./DisplayImage.react');
 var UserActions = require('../actions/UserActions');
 var UserStore = require('../stores/UserStore');
 
 var SignatureArea = React.createClass({
 
   getInitialState: function() {
-    return {display:1, img_list:[], status:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
+    return {display:1, img_list:[], img_list_signed:[], status:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
   },
   
   componentDidMount: function() {
@@ -32,6 +33,7 @@ var SignatureArea = React.createClass({
         <div>
             <button id="sign" type="button" onClick={this._onSign}>Finalize Selected Area and SendOTP</button>
         </div>
+        <DisplayImage list={this.state.img_list_signed} />
       </div>
     );
   },
@@ -89,7 +91,7 @@ var SignatureArea = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({img_list: UserStore.setImageList(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
+    this.setState({img_list: UserStore.setImageList(), img_list_signed: UserStore.setImageListSigned(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
   }
 });
 

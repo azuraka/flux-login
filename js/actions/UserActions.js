@@ -217,8 +217,18 @@ var UserActions = {
       console.log(data);
       AppDispatcher.dispatch({
         actionType: UserConstants.CHECK_AADHAR_OTP_VERIFIED,
-        response: data
+        response: data['message']
       });
+
+      var useful_data = data['data'];
+      var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
+      Functions.ajaxRequest(url,"GET",null,function (json) {
+        AppDispatcher.dispatch({
+          actionType: UserConstants.DISPLAY_SIGNED_IMAGE_SUCCESS,
+          response: json
+        });
+      });
+
     });
   },
 

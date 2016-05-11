@@ -26,7 +26,6 @@ var AadharOTP = React.createClass({
           </div>
           <div>
             <button id="verifyOTP" type="button" onClick={this._onSubmit}>Submit Aadhar OTP</button>
-            <button id="resendOTP" type="button" onClick={this._onSubmit}>Resend OTP</button>
           </div>
         </form>
       </div>    
@@ -40,10 +39,7 @@ var AadharOTP = React.createClass({
 
   _onSubmit: function(event, id) {
     event.preventDefault();
-    if(event.target.id=="resendOTP") {
-      UserActions.SendCheckAadharOTP('547406271887', this.state.uuid, this.state.state_id);
-    }
-    else if(event.target.id=="verifyOTP") {
+    if(event.target.id=="verifyOTP") {
       UserActions.VerifyCheckAadharOTP('547406271887', this.state.uuid, this.state.state_id, this.state.post_co, this.state.input_otp);
     }
   },

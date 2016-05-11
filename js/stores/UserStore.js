@@ -6,6 +6,7 @@ var Functions = require('../api/Functions');
 
 var CHANGE_EVENT = 'change';
 var imgList = [];
+var imgListSigned = [];
 var msg = '';
 var uuid = '';
 var state_id = '';
@@ -13,6 +14,12 @@ var state_id = '';
 function create_image_list(json) {
   json['image_paths'].forEach(function(url) {
     imgList.push("http://docx.8finatics.com/" + url);
+  });
+}
+
+function create_image_list_signed(json) {
+  json['image_paths'].forEach(function(url) {
+    imgListSigned.push("http://docx.8finatics.com/" + url);
   });
 }
 
@@ -28,6 +35,10 @@ function create_docInfo(data) {
 var UserStore = assign({}, EventEmitter.prototype, {
   setImageList: function() {
     return imgList;
+  },
+
+  setImageListSigned: function() {
+    return imgListSigned;
   },
 
   setStatus: function() {
@@ -83,6 +94,11 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.LINK_AADHAR_OTP_VERIFIED:
       create_status(action.response);
+      UserStore.emitChange();
+      break;
+    case UserConstants.DISPLAY_SIGNED_IMAGE_SUCCESS:
+      console.log(action.response);
+      create_image_list_signed(action.response);
       UserStore.emitChange();
       break;
 
