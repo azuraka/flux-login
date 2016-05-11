@@ -106,10 +106,20 @@ var UserActions = {
         "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
     },
       success: function(data) {
+        AppDispatcher.dispatch({
+          actionType: UserConstants.FILE_UPLOAD_SUCCESS,
+          response:data
+        });
+
+        var useful_data = data[0]['data'];
+        var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
+        Functions.ajaxRequest(url,"GET",null,function (json) {
           AppDispatcher.dispatch({
-            actionType: UserConstants.FILE_UPLOAD_SUCCESS,
-            response:data
+            actionType: RequestsConstants.DISPLAY_IMAGE_SUCCESS,
+            response: json
           });
+        });
+
       }.bind(this),
 
       error: function(xhr, status, err) {

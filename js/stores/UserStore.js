@@ -8,26 +8,10 @@ var CHANGE_EVENT = 'change';
 var imgList = [];
 var msg = '';
 
-function onSuccess(json) {
-  imgList = json;
-  //json['image_paths'].forEach(function(url){
-  //  imgList.push("http://docx.8finatics.com/" + url);
-  //});
-  //create_imgList(null, imgList);
-  //console.log(imgList);
-}
-
-
-function create_imgList(responseObjectData, outputData) {
-  if (!outputData){
-    data = responseObjectData;
-    all_img_url = "http://docx.8finatics.com/document/" + data['uuid'] + "/" + data['state_id'] + "/images";
-    Functions.ajaxRequest(all_img_url,"GET",null,onSuccess);
-  }
-  else{
-    //console.log(outputData);
-    UserStore.setImageList(imgList);
-  }
+function create_image_list(json) {
+  json['image_paths'].forEach(function(url) {
+    imgList.push("http://docx.8finatics.com/" + url);
+  });
 }
 
 function create_status(responseObjectMessage) {
@@ -35,7 +19,7 @@ function create_status(responseObjectMessage) {
 }
 
 var UserStore = assign({}, EventEmitter.prototype, {
-  setImageList: function(imgList) {
+  setImageList: function() {
     return imgList;
   },
 
@@ -62,12 +46,15 @@ AppDispatcher.register(function(action) {
       UserStore.emitChange();
       break;
     case UserConstants.FILE_UPLOAD_SUCCESS:
-      create_imgList(action.response[0]['data'], null);
       create_status(action.response[0]['message']);
       UserStore.emitChange();
       break;
     case UserConstants.FILE_UPLOAD_FAIL:
       create_status(action.response);
+      UserStore.emitChange();
+      break;
+    case UserConstants.DISPLAY_IMAGE_SUCCESS:
+      create_image_list(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.LINK_AADHAR_OTP_SENDING:
