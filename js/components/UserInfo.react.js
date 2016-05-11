@@ -7,7 +7,7 @@ var UserInfoStore = require('../stores/UserInfoStore');
 var UserInfo = React.createClass({
 
   getInitialState: function() {
-    return {name: '', email: '', has_aadhaar: false};
+    return {display: 1, name: '', email: '', has_aadhaar: false};
   },
   componentDidMount: function() {
     UserInfoStore.addChangeListener(this._onChange);

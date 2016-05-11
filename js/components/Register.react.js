@@ -1,12 +1,11 @@
 var React = require('react');
-var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var AuthStore = require('../stores/AuthStore');
 
 var Register = React.createClass({
 
   getInitialState: function() {
-    return {name: '', email: '', passwd: '', confm_passwd: '', status: '', display: 1};
+    return {display: 1, name: '', email: '', passwd: '', confm_passwd: '', status: ''};
   },
 
   componentDidMount: function() {

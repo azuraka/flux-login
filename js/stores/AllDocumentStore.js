@@ -13,7 +13,7 @@ function set_all_documents(data) {
 
 
 var AllDocumentStore = assign({}, EventEmitter.prototype, {
-  get_all_documents: function() {
+  get_docs_uploaded_by_me: function() {
     return documentList;
   },
   emitChange: function() {

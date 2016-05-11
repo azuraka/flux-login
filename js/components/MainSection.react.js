@@ -1,29 +1,14 @@
 var React = require('react');
-var ReactPropTypes = React.PropTypes;
-var UserActions = require('../actions/UserActions');
 var Register = require('./Register.react');
 var Login = require('./Login.react');
-var UploadDoc = require('./UploadDoc.react');
+var Dashboard = require('./Dashboard.react');
 var UserInfo = require('./UserInfo.react');
 var DocumentVault = require('./DocumentVault.react');
+var RequestsVault = require('./RequestsVault.react');
 var AuthStore = require('../stores/AuthStore');
-var UserInfoStore = require('../stores/UserInfoStore');
-var AllDocumentStore = require('../stores/AllDocumentStore');
-var UserStore = require('../stores/UserStore');
+var UserStore = require('../stores/SignRequestsStore');
 
 var MainSection = React.createClass({
-  getInitialState: function() {
-    return {};
-  },
-
-  componentDidMount: function() {
-    AuthStore.addChangeListener(this._onChange2);
-  },
-
-  componentWillUnmount: function() {
-    AuthStore.removeChangeListener(this._onChange2);
-  },
-
   render: function() {
     return (
       <div>
@@ -32,12 +17,9 @@ var MainSection = React.createClass({
         <Login />
         <UserInfo />
         <DocumentVault />
-        <UploadDoc />
+        <Dashboard />
       </div>
     );
-  },
-
-  _onChange2: function() {
   }
 });
 

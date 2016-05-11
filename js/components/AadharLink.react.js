@@ -12,15 +12,15 @@ function setStatus(){
 var AadharLink = React.createClass({
 
   getInitialState: function() {
-    return {is_user_auth:0, aadharNum:'', input_otp:'', status:''};
+    return {display: 1, aadharNum:'', input_otp:'', status:''};
   },
   
   componentDidMount: function() {
-    UserStore.addChangeListener(this._onChange2);
+    UserStore.addChangeListener(this._onChangeState);
   },
 
   componentWillUnmount: function() {
-    UserStore.removeChangeListener(this._onChange2);
+    UserStore.removeChangeListener(this._onChangeState);
   },
 
   render: function() {
@@ -48,7 +48,6 @@ var AadharLink = React.createClass({
         </form>
         <div>{this.state.status}</div>
       </div>
-        
     );
   },
   
@@ -69,7 +68,7 @@ var AadharLink = React.createClass({
     }
   },
 
-  _onChange2: function() {
+  _onChangeState: function() {
     this.setState(setStatus());
   }
 
