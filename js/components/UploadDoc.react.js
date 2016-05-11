@@ -3,17 +3,10 @@ var DisplayImage = require('./DisplayImage.react');
 var UserActions = require('../actions/UserActions');
 var UserStore = require('../stores/UserStore');
 
-function setStatusAndImageList(){
-  return{
-  	status: UserStore.setStatus(),
-  	imgsrc_list: UserStore.setImageList()
-  };
-}
-
 var UploadDoc = React.createClass({
 
   getInitialState: function() {
-    return {display:1, fileObj:'', imgsrc_list:[], status:''};
+    return {display:1, fileObj:'', status:'', img_list:[]};
   },
   
   componentDidMount: function() {
@@ -34,8 +27,7 @@ var UploadDoc = React.createClass({
           </div>
         </form>
         <div>{this.state.status}</div>
-        <div>{this.state.imgsrc_list}</div>
-        <DisplayImage />
+        <DisplayImage list={this.state.img_list}/>
       </div>       
     );
   },
@@ -49,7 +41,7 @@ var UploadDoc = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState(setStatusAndImageList());
+    this.setState({status: UserStore.setStatus(), img_list: UserStore.setImageList()});
   }
 });
 
