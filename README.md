@@ -1,6 +1,8 @@
 # flux-login
 
-Register and Login using Flux architecture
+Register and Login using Flux architecture<br>
+Document upload dashboard<br>
+Document Vault<br>
 
 ### To install <br>
 <br>
