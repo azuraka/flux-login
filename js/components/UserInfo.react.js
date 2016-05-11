@@ -20,7 +20,7 @@ var UserInfo = React.createClass({
   render: function() {
     return (
       <div>
-        <h4>UserInfo</h4>
+        <h2>UserInfo</h2>
         <form>
           Name : {this.state.name}
           Email : {this.state.email}

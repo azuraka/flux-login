@@ -6,7 +6,7 @@ var UserStore = require('../stores/UserStore');
 var AadharLink = React.createClass({
 
   getInitialState: function() {
-    return {display: 1, aadharNum:'', input_otp:'', status:''};
+    return {display: 1, aadharNum:'', input_otp:'', status1:'', status2:''};
   },
   
   componentDidMount: function() {
@@ -30,6 +30,7 @@ var AadharLink = React.createClass({
             <button id="sendOTP" type="button" onClick={this._onSubmit}>Send OTP</button>
           </div>
         </form>
+        <div>{this.state.status1}</div>
         <form>
           <div>
             <label htmlFor="input_otp">Enter OTP</label>
@@ -40,7 +41,7 @@ var AadharLink = React.createClass({
             <button id="resendOTP" type="button" onClick={this._onSubmit}>Resend OTP</button>
           </div>
         </form>
-        <div>{this.state.status}</div>
+        <div>{this.state.status2}</div>
       </div>
     );
   },
@@ -63,7 +64,7 @@ var AadharLink = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({status: UserStore.setStatus()});
+    this.setState({status1: UserStore.setStatusLinkOTPSend(), status2: UserStore.setStatusLinkOTPVerify()});
   }
 
 });

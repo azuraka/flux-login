@@ -10,28 +10,22 @@ var post_coordinates
 var UserActions = {
 
   UserRegister: function(name, email, password) {
-
     AppDispatcher.dispatch({
       actionType: UserConstants.USER_REGISTER_LOADING,
       response: "loading ..."
     });
 
-
-// Input: {‘email’, ‘name’, ‘password’}
-// Output: {‘status’, ‘message’, ‘data’: User details including id}
+    // Input: {‘email’, ‘name’, ‘password’}
+    // Output: {‘status’, ‘message’, ‘data’: User details including id}
 
     var registerData = {email, name, password}
-    Functions.ajaxRequest("http://docx.8finatics.com/auth/register", 'POST', registerData, onSuccess);
-    function onSuccess(data) {
-        AppDispatcher.dispatch({
-          actionType: UserConstants.USER_REGISTER_SUCCESS,
-          response:data['message']
-        });
-      }
+    Functions.ajaxRequest("http://docx.8finatics.com/auth/register", 'POST', registerData, function (data) {
+      AppDispatcher.dispatch({
+        actionType: UserConstants.USER_REGISTER_SUCCESS,
+        response:data['message']
+      });
+    });
   },
-
-// Input: {‘email’, ‘password’}
-// Output: {‘status’, ‘message’, ‘data’: User details}
 
   UserLogin: function(email, password) {
 
@@ -39,6 +33,9 @@ var UserActions = {
       actionType: UserConstants.USER_LOGIN_LOADING,
       response: "loading ..."
     });
+
+    // Input: {‘email’, ‘password’}
+    // Output: {‘status’, ‘message’, ‘data’: User details}
 
     var loginData = {email, password}
     Functions.ajaxRequest("http://docx.8finatics.com/auth/login", 'POST', loginData, function (data) {
@@ -102,43 +99,21 @@ var UserActions = {
     var fileData = new FormData();
     fileData.append("document", fileObj);
     fileData.append("title","");
-    $.ajax({
-      type: 'POST',
-      data: fileData,
-      url: "http://docx.8finatics.com/user/document",
-      cache: false,
-      processData: false,
-      contentType: false,
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-        "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
-    },
-      success: function(data) {
+    Functions.ajaxRequest("http://docx.8finatics.com/user/document", 'POST', fileData, function(data) {
+      AppDispatcher.dispatch({
+        actionType: UserConstants.FILE_UPLOAD_SUCCESS,
+        response:data
+      });
+
+      var useful_data = data[0]['data'];
+      var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
+      Functions.ajaxRequest(url,"GET",null,function (json) {
         AppDispatcher.dispatch({
-          actionType: UserConstants.FILE_UPLOAD_SUCCESS,
-          response:data
+          actionType: UserConstants.DISPLAY_IMAGE_SUCCESS,
+          response: json
         });
-
-        var useful_data = data[0]['data'];
-        var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
-        Functions.ajaxRequest(url,"GET",null,function (json) {
-          AppDispatcher.dispatch({
-            actionType: UserConstants.DISPLAY_IMAGE_SUCCESS,
-            response: json
-          });
-        });
-
-      }.bind(this),
-
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-          AppDispatcher.dispatch({
-            actionType: UserConstants.FILE_UPLOAD_FAIL,
-            response: err.toString()
-          });
-      }.bind(this)
+      });
     });
-
   },
 
   SendLinkAadharOTP: function(aadharNum) {
@@ -148,12 +123,12 @@ var UserActions = {
     });
 
     var aadharData = {
-       aadhaar_number: aadharNum,
-       resend: true
+      aadhaar_number: aadharNum,
+      resend: true
     };
     if (aadharNum.length == 12) {
-       //if (aadharNum.trim() !== '' && aadharNum.verhoeffCheck() === true)
-           Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/register/otp', 'POST', aadharData, aadhaar_ekyc_resend_result);
+      //if (aadharNum.trim() !== '' && aadharNum.verhoeffCheck() === true)
+        Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/register/otp', 'POST', aadharData, aadhaar_ekyc_resend_result);
     }
     function aadhaar_ekyc_resend_result(json) {
       AppDispatcher.dispatch({
@@ -170,18 +145,17 @@ var UserActions = {
     });
 
     var OTPData = {
-           aadhaar_number: aadharNum,
-           otp: input_otp
-       };
-    Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, aadhaar_ekyc_otp_result);
-
-    function aadhaar_ekyc_otp_result(json) {
+      aadhaar_number: aadharNum,
+      otp: input_otp
+    };
+    Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, function (json) {
+      console.log(json);
       get_profile_info();
       AppDispatcher.dispatch({
         actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
         response: json['message']
       });
-    }  
+    });  
   },
 
   SendCheckAadharOTP: function(aadharNum, uuid, state_id, post_co) {
@@ -191,7 +165,7 @@ var UserActions = {
     });
     post_coordinates = post_co;
     var aadharData = {
-       aadhaar_number: aadharNum
+      aadhaar_number: aadharNum
     };
     Functions.ajaxRequest('http://docx.8finatics.com/document/' + uuid + '/' + state_id + '/requestOTP', 'POST', aadharData, function (data) {
       console.log(data);
@@ -209,9 +183,9 @@ var UserActions = {
     });
 
     var SignData = {
-        otp: input_otp,
-        aadhaar_number: aadharNum,
-        coordinates: post_coordinates
+      otp: input_otp,
+      aadhaar_number: aadharNum,
+      coordinates: post_coordinates
     };
     console.log(SignData);
     Functions.ajaxRequest('http://docx.8finatics.com/document/' + uuid + '/' + state_id + '/sign', 'POST', SignData, function (data) {
@@ -229,7 +203,6 @@ var UserActions = {
           response: json
         });
       });
-
     });
   },
 

@@ -36,7 +36,7 @@ var ProfileInfo = React.createClass({
   render: function() {
     return (
       <div>
-        <h4>My Profile</h4>
+        <h2>My Profile</h2>
         <div className="row">
             <div className="row">
               {this.state.photo}

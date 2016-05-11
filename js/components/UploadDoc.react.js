@@ -41,7 +41,7 @@ var UploadDoc = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({status: UserStore.setStatus(), img_list: UserStore.setImageList(), uuid: UserStore.setDocInfo()[0], state_id: UserStore.setDocInfo()[1]});
+    this.setState({status: UserStore.setStatusFileUpload(), img_list: UserStore.setImageList(), uuid: UserStore.setDocInfo()[0], state_id: UserStore.setDocInfo()[1]});
   }
 });
 

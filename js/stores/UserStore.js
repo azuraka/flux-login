@@ -7,7 +7,9 @@ var Functions = require('../api/Functions');
 var CHANGE_EVENT = 'change';
 var imgList = [];
 var imgListSigned = [];
-var msg = '';
+var msgFileUpload = '';
+var msgLinkOTPSend = '';
+var msgLinkOTPVerify = '';
 var uuid = '';
 var state_id = '';
 
@@ -23,8 +25,16 @@ function create_image_list_signed(json) {
   });
 }
 
-function create_status(responseObjectMessage) {
-  msg = responseObjectMessage;
+function create_status_file_upload(responseObjectMessage) {
+  msgFileUpload = responseObjectMessage;
+}
+
+function create_status_link_otp_send(responseObjectMessage) {
+  msgLinkOTPSend = responseObjectMessage;
+}
+
+function create_status_link_otp_verify(responseObjectMessage) {
+  msgLinkOTPVerify = responseObjectMessage;
 }
 
 function create_docInfo(data) {
@@ -41,8 +51,16 @@ var UserStore = assign({}, EventEmitter.prototype, {
     return imgListSigned;
   },
 
-  setStatus: function() {
-    return msg;
+  setStatusFileUpload: function() {
+    return msgFileUpload;
+  },
+
+  setStatusLinkOTPSend: function() {
+    return msgLinkOTPSend;
+  },
+
+  setStatusLinkOTPVerify: function() {
+    return msgLinkOTPVerify;
   },
 
   setDocInfo: function() {
@@ -64,16 +82,16 @@ var UserStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
     case UserConstants.FILE_UPLOAD_LOADING:
-      create_status(action.response);
+      create_status_file_upload(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.FILE_UPLOAD_SUCCESS:
-      create_status(action.response[0]['message']);
+      create_status_file_upload(action.response[0]['message']);
       create_docInfo(action.response[0]['data']);
       UserStore.emitChange();
       break;
     case UserConstants.FILE_UPLOAD_FAIL:
-      create_status(action.response);
+      create_status_file_upload(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.DISPLAY_IMAGE_SUCCESS:
@@ -81,19 +99,19 @@ AppDispatcher.register(function(action) {
       UserStore.emitChange();
       break;
     case UserConstants.LINK_AADHAR_OTP_SENDING:
-      create_status(action.response);
+      create_status_link_otp_send(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.LINK_AADHAR_OTP_SENT:
-      create_status(action.response);
+      create_status_link_otp_send(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.LINK_AADHAR_OTP_VERIFYING:
-      create_status(action.response);
+      create_status_link_otp_verify(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.LINK_AADHAR_OTP_VERIFIED:
-      create_status(action.response);
+      create_status_link_otp_verify(action.response);
       UserStore.emitChange();
       break;
     case UserConstants.DISPLAY_SIGNED_IMAGE_SUCCESS:
