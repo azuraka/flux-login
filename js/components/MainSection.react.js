@@ -8,6 +8,8 @@ var UserInfo = require('./UserInfo.react');
 var AllDocumentStore = require('../stores/AllDocumentStore');
 var DocumentVault = require('./DocumentVault.react');
 var RequestsVault = require('./RequestsVault.react');
+var ProfileInfo = require('./ProfileInfo.react');
+
 var AuthStore = require('../stores/AuthStore');
 var UserInfoStore = require('../stores/UserInfoStore');
 
@@ -21,6 +23,7 @@ var MainSection = React.createClass({
         <h1>Welcome</h1>
         <Register />
         <Login />
+        <ProfileInfo />
         <UserInfo />
         <DocumentVault />
         <RequestsVault />

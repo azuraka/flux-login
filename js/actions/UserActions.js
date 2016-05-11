@@ -51,6 +51,9 @@ var UserActions = {
         response:data
       });
 
+      // Call to get all Profile info
+        get_profile_info();
+
       // Call for getting all docs
       Functions.ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
         AppDispatcher.dispatch({
@@ -61,6 +64,8 @@ var UserActions = {
 
       // Call for getting requests pending on others
       Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
+        get_profile_info();
+        
         AppDispatcher.dispatch({
           actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
           response: data
@@ -160,12 +165,13 @@ var UserActions = {
        Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, aadhaar_ekyc_otp_result);
 
     function aadhaar_ekyc_otp_result(json) {
+      get_profile_info();
       AppDispatcher.dispatch({
         actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
         response: json['message']
       });
       //console.log(json);
-    }  
+    }
   },
 
   SignDoc: function() {
@@ -176,6 +182,17 @@ var UserActions = {
   }
 };
 
-
+function get_profile_info() {
+  // Call for getting profile info
+  Functions.ajaxRequest("http://docx.8finatics.com/user/info","GET",null,function (data) {
+    if(data.aadhaar_linked)
+    {
+      AppDispatcher.dispatch({
+        actionType: UserConstants.USER_PROFILE_INFO,
+        response: data
+      });
+    }
+  });
+}
 
 module.exports = UserActions;
