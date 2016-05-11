@@ -6,7 +6,7 @@ var UserStore = require('../stores/UserStore');
 var UploadDoc = React.createClass({
 
   getInitialState: function() {
-    return {display:1, fileObj:'', status:'', img_list:[]};
+    return {display:1, fileObj:'', status:'', img_list:[], uuid:'', state_id:''};
   },
   
   componentDidMount: function() {
@@ -20,7 +20,7 @@ var UploadDoc = React.createClass({
   render: function() {
     return (
       <div>
-        <h3>Upload Document</h3>
+        <h2>Upload Document</h2>
         <form>
           <div>
             <input id="filename" type="file" onChange={this._onUpload}/>
@@ -41,7 +41,7 @@ var UploadDoc = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({status: UserStore.setStatus(), img_list: UserStore.setImageList()});
+    this.setState({status: UserStore.setStatus(), img_list: UserStore.setImageList(), uuid: UserStore.setDocInfo()[0], state_id: UserStore.setDocInfo()[1]});
   }
 });
 

@@ -5,7 +5,7 @@ var UserStore = require('../stores/UserStore');
 var AadharOTP = React.createClass({
 
   getInitialState: function() {
-    return {display:1, fileObj:'', imgsrc_list:[], status:'', post_co:[], aadharNum:''};
+    return {display:1, status:'', input_otp:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
   },
   
   componentDidMount: function() {
@@ -29,28 +29,27 @@ var AadharOTP = React.createClass({
             <button id="resendOTP" type="button" onClick={this._onSubmit}>Resend OTP</button>
           </div>
         </form>
-      </div>
-        
+      </div>    
     );
   },
-  
-  _onSelectArea: function(event, id) {
-  	event.preventDefault();
-    var post_coordinates = [];
-    $('#doc1').selectAreas({
-      allowResize: true,
-      minSize: [100, 50],
-      onChanged: debugQtyAreas,
-      width: 610,
-      areas: []
-    });
 
-    function debugQtyAreas (event, id, areas) {
-      //console.log(areas);
-    };
-	},
+  _onChange: function(event, value, id) {
+    if(event.target.id=="input_otp")
+      this.setState({input_otp: event.target.value});
+  },
+
+  _onSubmit: function(event, id) {
+    event.preventDefault();
+    if(event.target.id=="resendOTP") {
+      UserActions.SendCheckAadharOTP('547406271887', this.state.uuid, this.state.state_id);
+    }
+    else if(event.target.id=="verifyOTP") {
+      UserActions.VerifyCheckAadharOTP('547406271887', this.state.uuid, this.state.state_id, this.state.post_co, this.state.input_otp);
+    }
+  },
 
   _onChangeState: function() {
+    this.setState({uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
   }
 });
 

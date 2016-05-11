@@ -33,7 +33,6 @@ var DisplayImage = React.createClass({
       </div>
     );
   },
-
   _onChangeState: function() {
   }
 });
