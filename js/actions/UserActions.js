@@ -2,8 +2,10 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var UserConstants = require('../constants/UserConstants');
 var Functions = require('../api/Functions');
 var RequestsConstants = require('../constants/RequestsConstants');
-// To be removed :Sahil
+// To be removed: Sahil
 var userID;
+// To be removed: Saurabh
+var post_coordinates
 
 var UserActions = {
 
@@ -52,7 +54,7 @@ var UserActions = {
       });
 
       // Call to get all Profile info
-        get_profile_info();
+      get_profile_info();
 
       // Call for getting all docs
       Functions.ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
@@ -121,7 +123,7 @@ var UserActions = {
         var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
         Functions.ajaxRequest(url,"GET",null,function (json) {
           AppDispatcher.dispatch({
-            actionType: RequestsConstants.DISPLAY_IMAGE_SUCCESS,
+            actionType: UserConstants.DISPLAY_IMAGE_SUCCESS,
             response: json
           });
         });
@@ -158,7 +160,6 @@ var UserActions = {
         actionType: UserConstants.LINK_AADHAR_OTP_SENT,
         response: json['message']
       });
-      //console.log(json['message']);
     }
   },
 
@@ -172,7 +173,7 @@ var UserActions = {
            aadhaar_number: aadharNum,
            otp: input_otp
        };
-       Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, aadhaar_ekyc_otp_result);
+    Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, aadhaar_ekyc_otp_result);
 
     function aadhaar_ekyc_otp_result(json) {
       get_profile_info();
@@ -180,8 +181,46 @@ var UserActions = {
         actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
         response: json['message']
       });
-      //console.log(json);
-    }
+    }  
+  },
+
+  SendCheckAadharOTP: function(aadharNum, uuid, state_id, post_co) {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.CHECK_AADHAR_OTP_SENDING,
+      response: "sending otp ..."
+    });
+    post_coordinates = post_co;
+    var aadharData = {
+       aadhaar_number: aadharNum
+    };
+    Functions.ajaxRequest('http://docx.8finatics.com/document/' + uuid + '/' + state_id + '/requestOTP', 'POST', aadharData, function (data) {
+      console.log(data);
+      AppDispatcher.dispatch({
+        actionType: UserConstants.CHECK_AADHAR_OTP_SENT,
+        response: data
+      });
+    });
+  },
+
+  VerifyCheckAadharOTP: function(aadharNum, uuid, state_id, post_co, input_otp) {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.CHECK_AADHAR_OTP_VERIFYING,
+      response: "verifying otp ..."
+    });
+
+    var SignData = {
+        otp: input_otp,
+        aadhaar_number: aadharNum,
+        coordinates: post_coordinates
+    };
+    console.log(SignData);
+    Functions.ajaxRequest('http://docx.8finatics.com/document/' + uuid + '/' + state_id + '/sign', 'POST', SignData, function (data) {
+      console.log(data);
+      AppDispatcher.dispatch({
+        actionType: UserConstants.CHECK_AADHAR_OTP_VERIFIED,
+        response: data
+      });
+    });
   },
 
   SignDoc: function() {

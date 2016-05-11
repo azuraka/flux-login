@@ -1,5 +1,5 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
+var AppDispatcher = require('../dispatcher/AppDispatcher');
 var UserConstants = require('../constants/UserConstants');
 var assign = require('object-assign');
 var Functions = require('../api/Functions');
@@ -7,6 +7,8 @@ var Functions = require('../api/Functions');
 var CHANGE_EVENT = 'change';
 var imgList = [];
 var msg = '';
+var uuid = '';
+var state_id = '';
 
 function create_image_list(json) {
   json['image_paths'].forEach(function(url) {
@@ -18,6 +20,11 @@ function create_status(responseObjectMessage) {
   msg = responseObjectMessage;
 }
 
+function create_docInfo(data) {
+  uuid = data['uuid'];
+  state_id = data['state_id'];
+}
+
 var UserStore = assign({}, EventEmitter.prototype, {
   setImageList: function() {
     return imgList;
@@ -25,6 +32,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
   setStatus: function() {
     return msg;
+  },
+
+  setDocInfo: function() {
+    return [uuid, state_id];
   },
 
   emitChange: function() {
@@ -47,6 +58,7 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.FILE_UPLOAD_SUCCESS:
       create_status(action.response[0]['message']);
+      create_docInfo(action.response[0]['data']);
       UserStore.emitChange();
       break;
     case UserConstants.FILE_UPLOAD_FAIL:

@@ -5,7 +5,7 @@ var UserStore = require('../stores/UserStore');
 var SignatureArea = React.createClass({
 
   getInitialState: function() {
-    return {display:1, img_list:[], status:'', post_co:[], aadharNum:''};
+    return {display:1, img_list:[], status:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
   },
   
   componentDidMount: function() {
@@ -60,7 +60,7 @@ var SignatureArea = React.createClass({
       for (var i = 0; i < number_of_pages; i++) {
         var image_co = $('#doc' + i).selectAreas('areas');
         if(image_co.length !== 0) {
-          var img = document.getElementById('doc1');
+          var img = document.getElementById('doc' + i);
           var width = img.clientWidth;
           var height = img.clientHeight;;
           for (var q = 0; q < image_co.length; q++) {
@@ -74,24 +74,22 @@ var SignatureArea = React.createClass({
             y2 = Math.round((1 - y2 / height) * 72 * 11.69);
             post_coordinates.push([x1, y1, x2, y2, i + 1]);
           }
-        
-          // Imp observation - The comment statement below doesn't work when
-          // uncommented, but statement below it works
-
-          //this.setState({post_co: post_coordinates});
-          //console.log(this.state.post_co);
-          
         }
       }
+      // Imp observation - The comment statement below doesn't work when
+      // uncommented, but statement below it works
+
+      //this.setState({post_co: post_coordinates});
+      //console.log(this.state.post_co);
       this.setState({post_co: post_coordinates}, function () {
         console.log(this.state.post_co);
+        UserActions.SendCheckAadharOTP('547406271887', this.state.uuid, this.state.state_id, this.state.post_co);
       });
-      //UserActions.SendLinkAadharOTP();
    }
   },
 
   _onChangeState: function() {
-    this.setState({img_list: UserStore.setImageList()});
+    this.setState({img_list: UserStore.setImageList(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
   }
 });
 

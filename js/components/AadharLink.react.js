@@ -3,12 +3,6 @@ var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
 var UserStore = require('../stores/UserStore');
 
-function setStatus(){
-  return{
-    status: UserStore.setStatus()
-  };
-}
-
 var AadharLink = React.createClass({
 
   getInitialState: function() {
@@ -69,7 +63,7 @@ var AadharLink = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState(setStatus());
+    this.setState({status: UserStore.setStatus()});
   }
 
 });
