@@ -17,33 +17,40 @@ var Register = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        <h2>Register Account</h2>
-        <form>
-          <div>
-            <label htmlFor="name">Name</label>
-            <input id="name" type="text" value={this.state.name} onChange={this._onChange}/>
-          </div>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
-          </div>
-          <div>
-            <label htmlFor="passwd">Password</label>
-            <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
-          </div>
-          <div>
-            <label htmlFor="confm_passwd">Confirm Password</label>
-            <input id="confm_passwd" type="password" value={this.state.confm_passwd} onChange={this._onChange}/>
-          </div>
-          <div>
-            <button id="register" type="button" onClick={this._onSubmit}>Register</button>
-          </div>
-        </form>
-        <div>{this.state.status}</div>
-      </div>
-    );
+    if(this.state.display){
+      return (
+        <div>
+          <h2>Register Account</h2>
+          <form>
+            <div>
+              <label htmlFor="name">Name</label>
+              <input id="name" type="text" value={this.state.name} onChange={this._onChange}/>
+            </div>
+            <div>
+              <label htmlFor="email">Email</label>
+              <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
+            </div>
+            <div>
+              <label htmlFor="passwd">Password</label>
+              <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
+            </div>
+            <div>
+              <label htmlFor="confm_passwd">Confirm Password</label>
+              <input id="confm_passwd" type="password" value={this.state.confm_passwd} onChange={this._onChange}/>
+            </div>
+            <div>
+              <button id="register" type="button" onClick={this._onSubmit}>Register</button>
+            </div>
+          </form>
+          <div>{this.state.status}</div>
+        </div>
+      );
+    }
+    else{
+      return(
+        <div></div>
+      );
+    }
   },
 
   _onChange: function(event, value, id) {
@@ -67,7 +74,7 @@ var Register = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({status: AuthStore.statusMsgReg()});
+    this.setState({display: AuthStore.authDisplay(), status: AuthStore.statusMsgReg()});
   }
 });
 

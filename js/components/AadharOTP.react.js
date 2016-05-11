@@ -5,7 +5,7 @@ var UserStore = require('../stores/UserStore');
 var AadharOTP = React.createClass({
 
   getInitialState: function() {
-    return {display:1, status:'', input_otp:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
+    return {display:0, status:'', input_otp:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
   },
   
   componentDidMount: function() {
@@ -17,19 +17,24 @@ var AadharOTP = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        <form>
-          <div>
-            <label htmlFor="input_otp">Enter OTP</label>
-            <input id="input_otp" type="text" value={this.state.input_otp} onChange={this._onChange}/>
-          </div>
-          <div>
-            <button id="verifyOTP" type="button" onClick={this._onSubmit}>Submit Aadhar OTP</button>
-          </div>
-        </form>
-      </div>    
-    );
+    if(this.state.display) {
+      return (
+        <div>
+          <form>
+            <div>
+              <label htmlFor="input_otp">Enter OTP</label>
+              <input id="input_otp" type="text" value={this.state.input_otp} onChange={this._onChange}/>
+            </div>
+            <div>
+              <button id="verifyOTP" type="button" onClick={this._onSubmit}>Submit Aadhar OTP</button>
+            </div>
+          </form>
+        </div>    
+      );
+    }
+    else {
+      return(<div></div>);
+    }
   },
 
   _onChange: function(event, value, id) {

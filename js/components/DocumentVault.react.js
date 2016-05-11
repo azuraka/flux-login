@@ -9,6 +9,7 @@ var DocumentVault = React.createClass({
 
   getInitialState: function() {
     return {
+      display: 0,
       uploaded_by_me_data : [],
       shared_by_others :[]
     }
@@ -23,14 +24,19 @@ var DocumentVault = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        <h4>Uploaded By Me</h4>
-        <DocumentList documents={this.state.uploaded_by_me_data} />
-        <h4>Shared By Others</h4>
-        <DocumentList documents={this.state.shared_by_others} />
-      </div>
-    );
+    if(this.state.display){
+      return (
+        <div>
+          <h2>Uploaded By Me</h2>
+          <DocumentList documents={this.state.uploaded_by_me_data} />
+          <h2>Shared By Others</h2>
+          <DocumentList documents={this.state.shared_by_others} />
+        </div>
+      );
+    }
+    else{
+      return(<div></div>);
+    }
   },
 
   _onChange: function() {

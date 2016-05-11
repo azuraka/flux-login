@@ -9,6 +9,7 @@ var RequestsVault = React.createClass({
 
   getInitialState: function() {
     return {
+      display: 0,
       requests_pending_on_others : [],
       requests_pending_on_me :[],
       requests_completed :[]
@@ -24,16 +25,21 @@ var RequestsVault = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        <h4>Pending On Others</h4>
-          <RequestList requests={this.state.requests_pending_on_others} />
-        <h4>Requests Pending on Me</h4>
-          <RequestList requests={this.state.requests_pending_on_me} />
-        <h4>Completed Requests</h4>
-          <RequestList requests={this.state.requests_completed} />
-      </div>
-    );
+    if(this.state.display){
+      return (
+        <div>
+          <h4>Pending On Others</h4>
+            <RequestList requests={this.state.requests_pending_on_others} />
+          <h4>Requests Pending on Me</h4>
+            <RequestList requests={this.state.requests_pending_on_me} />
+          <h4>Completed Requests</h4>
+            <RequestList requests={this.state.requests_completed} />
+        </div>
+      );
+    }
+    else{
+      return(<div></div>);
+    }
   },
 
   _onChange: function() {

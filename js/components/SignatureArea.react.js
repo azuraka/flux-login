@@ -6,7 +6,7 @@ var UserStore = require('../stores/UserStore');
 var SignatureArea = React.createClass({
 
   getInitialState: function() {
-    return {display:1, img_list:[], img_list_signed:[], status:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
+    return {display:0, img_list:[], img_list_signed:[], status:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
   },
   
   componentDidMount: function() {
@@ -18,24 +18,29 @@ var SignatureArea = React.createClass({
   },
 
   render: function() {
-    var images = this.state.img_list.map((list,i) => {
-      return [
+    if(this.state.display){
+      var images = this.state.img_list.map((list,i) => {
+        return [
+          <div>
+            <img id={'doc' + i} src={list} onMouseOver={this._onSelectArea}></img>
+          </div>
+        ];
+      });
+      return (
         <div>
-          <img id={'doc' + i} src={list} onMouseOver={this._onSelectArea}></img>
+          <div>
+            {images}
+          </div>
+          <div>
+              <button id="sign" type="button" onClick={this._onSign}>Finalize Selected Area and SendOTP</button>
+          </div>
+          <DisplayImage list={this.state.img_list_signed} />
         </div>
-      ];
-    });
-    return (
-      <div>
-        <div>
-          {images}
-        </div>
-        <div>
-            <button id="sign" type="button" onClick={this._onSign}>Finalize Selected Area and SendOTP</button>
-        </div>
-        <DisplayImage list={this.state.img_list_signed} />
-      </div>
-    );
+      );
+    }
+    else {
+      return(<div></div>);
+    }
   },
   
   _onSelectArea: function(event, id) {

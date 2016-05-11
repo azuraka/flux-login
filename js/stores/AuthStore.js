@@ -7,6 +7,8 @@ var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var statusReg = '';
 var statusLog = '';
+var authDisplay = 1;
+var uploadDocDisplay = 0;
 
 function create_status_reg(message) {
   statusReg = message;
@@ -16,6 +18,11 @@ function create_status_log(message) {
   statusLog = message;
 }
 
+function set_auth_display() {
+  authDisplay = 0;
+  uploadDocDisplay = 1;
+}
+
 var AuthStore = assign({}, EventEmitter.prototype, {
   statusMsgReg: function() {
     return statusReg;
@@ -23,6 +30,15 @@ var AuthStore = assign({}, EventEmitter.prototype, {
 
   statusMsgLog: function() {
     return statusLog;
+  },
+
+  authDisplay: function() {
+    return authDisplay;
+  },
+
+  uploadDocDisplay: function() {
+    console.log(uploadDocDisplay + "asdfg");
+    return uploadDocDisplay;
   },
 
   emitChange: function() {
@@ -59,6 +75,7 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.USER_LOGIN_SUCCESS:
       create_status_log(action.response);
+      set_auth_display();
       AuthStore.emitChange();
       break;
     case UserConstants.USER_LOGIN_FAIL:

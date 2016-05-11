@@ -17,25 +17,32 @@ var Login = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        <h2>Login</h2>
-        <form>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
-          </div>
-          <div>
-            <label htmlFor="passwd">Password</label>
-            <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
-          </div>
-          <div>
-            <button id="login" type="button" onClick={this._onSubmit}>Login</button>
-          </div>
-        </form>
-        <div>{this.state.status}</div>
-      </div>
-    );
+    if(this.state.display){
+      return (
+        <div>
+          <h2>Login</h2>
+          <form>
+            <div>
+              <label htmlFor="email">Email</label>
+              <input id="email" type="text" value={this.state.email} onChange={this._onChange}/>
+            </div>
+            <div>
+              <label htmlFor="passwd">Password</label>
+              <input id="passwd" type="password" value={this.state.passwd} onChange={this._onChange}/>
+            </div>
+            <div>
+              <button id="login" type="button" onClick={this._onSubmit}>Login</button>
+            </div>
+          </form>
+          <div>{this.state.status}</div>
+        </div>
+      );
+    }
+    else{
+      return (
+        <div></div>
+        );
+    }
   },
 
   _onChange: function(event, value, id) {
@@ -55,7 +62,7 @@ var Login = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({status: AuthStore.statusMsgLog()});
+    this.setState({display: AuthStore.authDisplay(), status: AuthStore.statusMsgLog()});
   }
 });
 

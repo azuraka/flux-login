@@ -8,7 +8,7 @@ var ProfileInfo = React.createClass({
 
   getInitialState: function() {
     return {
-      display: 1,
+      display: 0,
       name: '',
       email: '',
       has_aadhaar: false,
@@ -34,42 +34,47 @@ var ProfileInfo = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        <h2>My Profile</h2>
-        <div className="row">
-            <div className="row">
-              {this.state.photo}
-            </div>
-            <div className="row">
-              Full Name : {this.state.name}
-            </div>
-            <div className="row">
-              Email : {this.state.email}
-            </div>
-            <div className="row">
-              Aadhaar Number : {this.state.aadhaar_number}
-            </div>
-            <div className="row">
-              {this.state.care_of}
-            </div>
-            <div className="row">
-              DOB : {this.state.date_of_birth}
-            </div>
-            <div className="row">
-              Gender : {this.state.gender}
-            </div>
-            <div className="row">
-              Address : {this.state.line1}<br/>
+    if(this.state.display){
+      return (
+        <div>
+          <h2>My Profile</h2>
+          <div className="row">
+              <div className="row">
+                {this.state.photo}
+              </div>
+              <div className="row">
+                Full Name : {this.state.name}
+              </div>
+              <div className="row">
+                Email : {this.state.email}
+              </div>
+              <div className="row">
+                Aadhaar Number : {this.state.aadhaar_number}
+              </div>
+              <div className="row">
+                {this.state.care_of}
+              </div>
+              <div className="row">
+                DOB : {this.state.date_of_birth}
+              </div>
+              <div className="row">
+                Gender : {this.state.gender}
+              </div>
+              <div className="row">
+                Address : {this.state.line1}<br/>
 
-              {this.state.line2}<br/>
-              {this.state.locality}<br/>
-              {this.state.city} {this.state.state}<br/>
-              {this.state.pincode}<br/>
-            </div>
+                {this.state.line2}<br/>
+                {this.state.locality}<br/>
+                {this.state.city} {this.state.state}<br/>
+                {this.state.pincode}<br/>
+              </div>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+    else{
+      return(<div></div>);
+    }
   },
 
   _onChange: function() {

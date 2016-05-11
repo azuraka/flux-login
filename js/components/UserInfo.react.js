@@ -7,7 +7,7 @@ var UserInfoStore = require('../stores/UserInfoStore');
 var UserInfo = React.createClass({
 
   getInitialState: function() {
-    return {display: 1, name: '', email: '', has_aadhaar: false};
+    return {display: 0, name: '', email: '', has_aadhaar: false};
   },
   componentDidMount: function() {
     UserInfoStore.addChangeListener(this._onChange);
@@ -18,16 +18,21 @@ var UserInfo = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        <h2>UserInfo</h2>
-        <form>
-          Name : {this.state.name}
-          Email : {this.state.email}
-          Aadhaar Linked : {this.state.has_aadhaar}
-        </form>
-      </div>
-    );
+    if(this.state.display){
+      return (
+        <div>
+          <h2>UserInfo</h2>
+          <form>
+            Name : {this.state.name}
+            Email : {this.state.email}
+            Aadhaar Linked : {this.state.has_aadhaar}
+          </form>
+        </div>
+      );
+    }
+    else{
+      return(<div></div>);
+    }
   },
 
   _onChange: function() {
