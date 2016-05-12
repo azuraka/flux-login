@@ -99,20 +99,48 @@ var UserActions = {
     var fileData = new FormData();
     fileData.append("document", fileObj);
     fileData.append("title","");
-    Functions.ajaxRequest("http://docx.8finatics.com/user/document", 'POST', fileData, function(data) {
-      AppDispatcher.dispatch({
-        actionType: UserConstants.FILE_UPLOAD_SUCCESS,
-        response:data
-      });
-
-      var useful_data = data[0]['data'];
-      var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
-      Functions.ajaxRequest(url,"GET",null,function (json) {
+    $.ajax({
+      type: 'POST',
+      data: fileData,
+      url: "http://docx.8finatics.com/user/document",
+      cache: false,
+      processData: false,
+      contentType: false,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
+    },
+      success: function(data) {
         AppDispatcher.dispatch({
-          actionType: UserConstants.DISPLAY_IMAGE_SUCCESS,
-          response: json
+          actionType: UserConstants.FILE_UPLOAD_SUCCESS,
+          response:data
         });
-      });
+
+        var useful_data = data[0]['data'];
+        var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
+        Functions.ajaxRequest(url,"GET",null,function (json) {
+          AppDispatcher.dispatch({
+            actionType: UserConstants.DISPLAY_IMAGE_SUCCESS,
+            response: json
+          });
+        });
+
+      }.bind(this),
+
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+          AppDispatcher.dispatch({
+            actionType: UserConstants.FILE_UPLOAD_FAIL,
+            response: err.toString()
+          });
+      }.bind(this)
+    });
+
+  },
+
+  ChangeDisplay: function() {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.CHANGE_PAGE,
     });
   },
 
@@ -154,6 +182,11 @@ var UserActions = {
       AppDispatcher.dispatch({
         actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
         response: json['message']
+      });
+    },
+    function () {
+      AppDispatcher.dispatch({
+        actionType: UserConstants.LINK_AADHAR_OTP_VERIFICATION_FAILED
       });
     });  
   },

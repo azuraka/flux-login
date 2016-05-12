@@ -12,6 +12,10 @@ var msgLinkOTPSend = '';
 var msgLinkOTPVerify = '';
 var uuid = '';
 var state_id = '';
+var displayDisplayImage;
+var displayAadharLink;
+var displaySignatureArea;
+var displayAadharOTP;
 
 function create_image_list(json) {
   json['image_paths'].forEach(function(url) {
@@ -42,6 +46,17 @@ function create_docInfo(data) {
   state_id = data['state_id'];
 }
 
+function change_display() {
+  displayDisplayImage = 0;
+  displayAadharLink = 1;
+}
+
+function change_display2() {
+  displayAadharLink = 0;
+  displaySignatureArea = 1;
+  displayAadharOTP = 1;
+}
+
 var UserStore = assign({}, EventEmitter.prototype, {
   setImageList: function() {
     return imgList;
@@ -65,6 +80,22 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
   setDocInfo: function() {
     return [uuid, state_id];
+  },
+
+  displayImageDisplay: function() {
+    return displayDisplayImage;
+  },
+
+  aadharLinkDisplay: function() {
+    return displayAadharLink;
+  },
+
+  signatureAreaDisplay: function() {
+    return displaySignatureArea;
+  },
+
+  aadharOTPDisplay: function() {
+    return displayAadharOTP;
   },
 
   emitChange: function() {
@@ -98,6 +129,10 @@ AppDispatcher.register(function(action) {
       create_image_list(action.response);
       UserStore.emitChange();
       break;
+    case UserConstants.CHANGE_PAGE:
+      change_display();
+      UserStore.emitChange();
+      break;
     case UserConstants.LINK_AADHAR_OTP_SENDING:
       create_status_link_otp_send(action.response);
       UserStore.emitChange();
@@ -112,6 +147,11 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.LINK_AADHAR_OTP_VERIFIED:
       create_status_link_otp_verify(action.response);
+      change_display2();
+      UserStore.emitChange();
+      break;
+    case UserConstants.LINK_AADHAR_OTP_VERIFICATION_FAILED:
+      change_display2();
       UserStore.emitChange();
       break;
     case UserConstants.DISPLAY_SIGNED_IMAGE_SUCCESS:

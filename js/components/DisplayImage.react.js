@@ -34,6 +34,7 @@ var DisplayImage = React.createClass({
     );
   },
   _onChangeState: function() {
+    this.setState({display: UserStore.displayImageDisplay()});
   }
 });
 

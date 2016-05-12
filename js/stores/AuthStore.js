@@ -23,6 +23,10 @@ function set_auth_display() {
   uploadDocDisplay = 1;
 }
 
+function change_display() {
+  uploadDocDisplay = 0;
+}
+
 var AuthStore = assign({}, EventEmitter.prototype, {
   statusMsgReg: function() {
     return statusReg;
@@ -37,7 +41,6 @@ var AuthStore = assign({}, EventEmitter.prototype, {
   },
 
   uploadDocDisplay: function() {
-    console.log(uploadDocDisplay + "asdfg");
     return uploadDocDisplay;
   },
 
@@ -80,6 +83,10 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.USER_LOGIN_FAIL:
       create_status_log(action.response);
+      AuthStore.emitChange();
+      break;
+    case UserConstants.CHANGE_PAGE:
+      change_display();
       AuthStore.emitChange();
       break;
     

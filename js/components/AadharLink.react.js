@@ -69,7 +69,7 @@ var AadharLink = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({status1: UserStore.setStatusLinkOTPSend(), status2: UserStore.setStatusLinkOTPVerify()});
+    this.setState({display: UserStore.aadharLinkDisplay() ,status1: UserStore.setStatusLinkOTPSend(), status2: UserStore.setStatusLinkOTPVerify()});
   }
 
 });

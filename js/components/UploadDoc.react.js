@@ -12,10 +12,12 @@ var UploadDoc = React.createClass({
   
   componentDidMount: function() {
     UserStore.addChangeListener(this._onChangeState);
+    AuthStore.addChangeListener(this._onChangeState);
   },
 
   componentWillUnmount: function() {
     UserStore.removeChangeListener(this._onChangeState);
+    AuthStore.addChangeListener(this._onChangeState);
   },
 
   render: function() {
@@ -30,7 +32,10 @@ var UploadDoc = React.createClass({
           </form>
           <div>{this.state.status}</div>
           <DisplayImage list={this.state.img_list}/>
-        </div>       
+          <div>
+              <button id="signbutt" type="button" onClick={this._onSubmit}>Sign Doc</button>
+          </div>
+        </div>
       );
     }
     else{
@@ -44,6 +49,10 @@ var UploadDoc = React.createClass({
       this.state.fileObj = event.target.files[0];
       UserActions.UserUpload(this.state.fileObj);
     }
+  },
+
+  _onSubmit: function(event) {
+    UserActions.ChangeDisplay();
   },
 
   _onChangeState: function() {

@@ -50,7 +50,7 @@ var AadharOTP = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
+    this.setState({display: UserStore.aadharOTPDisplay(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
   }
 });
 
