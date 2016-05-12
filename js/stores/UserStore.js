@@ -10,6 +10,8 @@ var imgListSigned = [];
 var msgFileUpload = '';
 var msgLinkOTPSend = '';
 var msgLinkOTPVerify = '';
+var msgCheckOTPSend;
+var msgCheckOTPVerify;
 var uuid = '';
 var state_id = '';
 var displayDisplayImage;
@@ -46,6 +48,14 @@ function create_docInfo(data) {
   state_id = data['state_id'];
 }
 
+function change_status_aadhar_otp_send(responseObjectMessage) {
+  msgLinkOTPSend = responseObjectMessage;
+}
+
+function change_status_aadhar_otp_verify(responseObjectMessage) {
+  msgLinkOTPVerify = responseObjectMessage;
+}
+
 function change_display() {
   displayDisplayImage = 0;
   displayAadharLink = 1;
@@ -55,6 +65,10 @@ function change_display2() {
   displayAadharLink = 0;
   displaySignatureArea = 1;
   displayAadharOTP = 1;
+}
+
+function change_display3() {
+  displayAadharOTP = 0;
 }
 
 var UserStore = assign({}, EventEmitter.prototype, {
@@ -76,6 +90,14 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
   setStatusLinkOTPVerify: function() {
     return msgLinkOTPVerify;
+  },
+
+  setStatusCheckOTPSend: function() {
+    return msgCheckOTPSend;
+  },
+
+  setStatusCheckOTPVerify: function() {
+    return msgCheckOTPVerify;
   },
 
   setDocInfo: function() {
@@ -135,7 +157,7 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.LINK_AADHAR_OTP_SENDING:
       create_status_link_otp_send(action.response);
-      UserStore.emitChange();
+      UserStore.emitChange(action.response);
       break;
     case UserConstants.LINK_AADHAR_OTP_SENT:
       create_status_link_otp_send(action.response);
@@ -143,7 +165,7 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.LINK_AADHAR_OTP_VERIFYING:
       create_status_link_otp_verify(action.response);
-      UserStore.emitChange();
+      UserStore.emitChange(action.response);
       break;
     case UserConstants.LINK_AADHAR_OTP_VERIFIED:
       create_status_link_otp_verify(action.response);
@@ -152,6 +174,23 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.LINK_AADHAR_OTP_VERIFICATION_FAILED:
       change_display2();
+      UserStore.emitChange();
+      break;
+    case UserConstants.CHECK_AADHAR_OTP_SENDING:
+      //change_status_aadhar_otp_send();
+      UserStore.emitChange();
+      break;
+    case UserConstants.CHECK_AADHAR_OTP_SENT:
+      //change_status_aadhar_otp_send();
+      UserStore.emitChange();
+      break;
+    case UserConstants.CHECK_AADHAR_OTP_VERIFYING:
+      //change_status_aadhar_otp_verify();
+      UserStore.emitChange();
+      break;
+    case UserConstants.CHECK_AADHAR_OTP_VERIFIED:
+      //change_status_aadhar_otp_verify();
+      change_display3();
       UserStore.emitChange();
       break;
     case UserConstants.DISPLAY_SIGNED_IMAGE_SUCCESS:

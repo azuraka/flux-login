@@ -29,6 +29,7 @@ var AadharOTP = React.createClass({
               <button id="verifyOTP" type="button" onClick={this._onSubmit}>Submit Aadhar OTP</button>
             </div>
           </form>
+          <div>{this.state.status}</div>
         </div>    
       );
     }
@@ -50,7 +51,7 @@ var AadharOTP = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({display: UserStore.aadharOTPDisplay(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
+    this.setState({status: UserStore.setStatusLinkOTPVerify(), display: UserStore.aadharOTPDisplay(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
   }
 });
 

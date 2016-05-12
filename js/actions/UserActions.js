@@ -39,53 +39,61 @@ var UserActions = {
 
     var loginData = {email, password}
     Functions.ajaxRequest("http://docx.8finatics.com/auth/login", 'POST', loginData, function (data) {
-      userID = data.data.id;
-      AppDispatcher.dispatch({
-        actionType: UserConstants.USER_LOGIN_SUCCESS,
-        response: data['message']
-      });
-
-      AppDispatcher.dispatch({
-        actionType: UserConstants.USER_INFO,
-        response:data
-      });
-
-      // Call to get all Profile info
-      get_profile_info();
-
-      // Call for getting all docs
-      Functions.ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
+      if(data['status']=='success') {
+        userID = data.data.id;
         AppDispatcher.dispatch({
-          actionType: UserConstants.USER_ALL_DOCUMENTS,
-          response: data
+          actionType: UserConstants.USER_LOGIN_SUCCESS,
+          response: data['message']
         });
-      });
 
-      // Call for getting requests pending on others
-      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_INFO,
+          response:data
+        });
+
+        // Call to get all Profile info
         get_profile_info();
-        
-        AppDispatcher.dispatch({
-          actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
-          response: data
-        });
-      });
 
-      // Call for getting requests pending on me
-      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_signs","GET",null,function (data) {
-        AppDispatcher.dispatch({
-          actionType: RequestsConstants.REQUESTS_PENDING_ON_ME,
-          response: data
+        // Call for getting all docs
+        Functions.ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
+          AppDispatcher.dispatch({
+            actionType: UserConstants.USER_ALL_DOCUMENTS,
+            response: data
+          });
         });
-      });
 
-      // Call for getting completed requests
-      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/completed_requests","GET",null,function (data) {
-        AppDispatcher.dispatch({
-          actionType: RequestsConstants.REQUESTS_COMPLETED,
-          response: data
+        // Call for getting requests pending on others
+        Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
+          get_profile_info();
+          
+          AppDispatcher.dispatch({
+            actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
+            response: data
+          });
         });
-      });
+
+        // Call for getting requests pending on me
+        Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_signs","GET",null,function (data) {
+          AppDispatcher.dispatch({
+            actionType: RequestsConstants.REQUESTS_PENDING_ON_ME,
+            response: data
+          });
+        });
+
+        // Call for getting completed requests
+        Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/completed_requests","GET",null,function (data) {
+          AppDispatcher.dispatch({
+            actionType: RequestsConstants.REQUESTS_COMPLETED,
+            response: data
+          });
+        });
+      }
+      else{
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_LOGIN_FAIL,
+          response: data['message']
+        });
+      }
     });
   },
 
