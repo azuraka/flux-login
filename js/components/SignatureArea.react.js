@@ -97,7 +97,7 @@ var SignatureArea = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({state: UserStore.setStatusLinkOTPSend(),display: UserStore.signatureAreaDisplay(),img_list: UserStore.setImageList(), img_list_signed: UserStore.setImageListSigned(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
+    this.setState({status: UserStore.setStatusCheckOTP(),display: UserStore.signatureAreaDisplay(),img_list: UserStore.setImageList(), img_list_signed: UserStore.setImageListSigned(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
   }
 });
 
