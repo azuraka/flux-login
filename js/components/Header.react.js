@@ -43,6 +43,8 @@ var Header = React.createClass({
     event.preventDefault();
     if(event.target.id != 'logout')
       UserActions.ChangeDisplay(event.target.id);
+    //else
+    //  UserActions.UserLogout();
   },
   
   _onChangeState: function() {

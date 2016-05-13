@@ -38,8 +38,8 @@ var AadharLink = React.createClass({
               <input id="input_otp" type="text" value={this.state.input_otp} onChange={this._onChange}/>
             </div>
             <div>
-              <button id="verifyOTP" type="button" onClick={this._onSubmit}>Verify</button>
               <button id="resendOTP" type="button" onClick={this._onSubmit}>Resend OTP</button>
+              <button id="verifyOTP" type="button" onClick={this._onSubmit}>Verify</button>
             </div>
           </form>
           <div>{this.state.status2}</div>

@@ -97,6 +97,18 @@ var UserActions = {
     });
   },
 
+  UserLogout: function() {
+
+    AppDispatcher.dispatch({
+      actionType: UserConstants.USER_LOGIN_LOADING,
+      response: "loading ..."
+    });
+
+    Functions.ajaxRequest("http://docx.8finatics.com/auth/logout", 'GET', null, function (data) {
+      console.log(data);
+    });
+  },
+
   UserUpload: function(fileObj) {
 
     AppDispatcher.dispatch({

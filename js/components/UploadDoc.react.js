@@ -24,7 +24,7 @@ var UploadDoc = React.createClass({
           <h2>Upload Document</h2>
           <form>
             <div>
-              <input id="filename" type="file" onChange={this._onUpload}/>
+              <input id="filename" type="file" accept="application/pdf" onChange={this._onUpload}/>
             </div>
           </form>
           <div>{this.state.status}</div>
