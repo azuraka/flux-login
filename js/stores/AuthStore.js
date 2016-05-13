@@ -8,7 +8,7 @@ var CHANGE_EVENT = 'change';
 var statusReg = '';
 var statusLog = '';
 var authDisplay = 1;
-var uploadDocDisplay = 0;
+var headerDisplay = 0;
 
 function create_status_reg(message) {
   statusReg = message;
@@ -20,7 +20,7 @@ function create_status_log(message) {
 
 function set_auth_display() {
   authDisplay = 0;
-  uploadDocDisplay = 1;
+  headerDisplay = 1;
 }
 
 function change_display() {
@@ -40,8 +40,8 @@ var AuthStore = assign({}, EventEmitter.prototype, {
     return authDisplay;
   },
 
-  uploadDocDisplay: function() {
-    return uploadDocDisplay;
+  headerDisplay: function() {
+    return headerDisplay;
   },
 
   emitChange: function() {
@@ -83,10 +83,6 @@ AppDispatcher.register(function(action) {
       break;
     case UserConstants.USER_LOGIN_FAIL:
       create_status_log(action.response);
-      AuthStore.emitChange();
-      break;
-    case UserConstants.CHANGE_PAGE:
-      change_display();
       AuthStore.emitChange();
       break;
     

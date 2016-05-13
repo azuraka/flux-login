@@ -146,9 +146,16 @@ var UserActions = {
 
   },
 
-  ChangeDisplay: function() {
+  ChangeDisplay: function(id=0) {
     AppDispatcher.dispatch({
-      actionType: UserConstants.CHANGE_PAGE,
+      actionType: UserConstants.CHANGE_PAGE_HEADER,
+      board: id
+    });
+  },
+
+  SignNow: function() {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.SIGN_NOW,
     });
   },
 

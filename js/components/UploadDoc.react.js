@@ -2,22 +2,19 @@ var React = require('react');
 var DisplayImage = require('./DisplayImage.react');
 var UserActions = require('../actions/UserActions');
 var UserStore = require('../stores/UserStore');
-var AuthStore = require('../stores/AuthStore');
 
 var UploadDoc = React.createClass({
 
   getInitialState: function() {
-    return {display: 0, fileObj:'', status:'', img_list:[], uuid:'', state_id:''};
+    return {display: 1, fileObj:'', status:'', img_list:[], uuid:'', state_id:''};
   },
   
   componentDidMount: function() {
     UserStore.addChangeListener(this._onChangeState);
-    AuthStore.addChangeListener(this._onChangeState);
   },
 
   componentWillUnmount: function() {
     UserStore.removeChangeListener(this._onChangeState);
-    AuthStore.addChangeListener(this._onChangeState);
   },
 
   render: function() {
@@ -52,11 +49,11 @@ var UploadDoc = React.createClass({
   },
 
   _onSubmit: function(event) {
-    UserActions.ChangeDisplay();
+    UserActions.SignNow();
   },
 
   _onChangeState: function() {
-    this.setState({display: AuthStore.uploadDocDisplay(), status: UserStore.setStatusFileUpload(), img_list: UserStore.setImageList(), uuid: UserStore.setDocInfo()[0], state_id: UserStore.setDocInfo()[1]});
+    this.setState({display: UserStore.displayUploadDoc(), status: UserStore.setStatusFileUpload(), img_list: UserStore.setImageList(), uuid: UserStore.setDocInfo()[0], state_id: UserStore.setDocInfo()[1]});
   }
 });
 

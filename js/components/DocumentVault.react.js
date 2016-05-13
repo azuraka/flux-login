@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
-var AuthStore = require('../stores/AuthStore');
+var UserStore = require('../stores/UserStore');
 var AllDocumentStore = require('../stores/AllDocumentStore');
 var DocumentList = require('./DocumentList.react');
 
@@ -17,10 +17,12 @@ var DocumentVault = React.createClass({
 
   componentDidMount: function() {
     AllDocumentStore.addChangeListener(this._onChange);
+    UserStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
     AllDocumentStore.removeChangeListener(this._onChange);
+    UserStore.removeChangeListener(this._onChange);
   },
 
   render: function() {
@@ -43,6 +45,7 @@ var DocumentVault = React.createClass({
     var data_uploaded_by_me = AllDocumentStore.get_docs_uploaded_by_me();
     // var data_shared_by_others = AllDocumentStore.get_docs_shared_by_others();
     this.setState({
+      display: UserStore.displayDocumentVault(),
       uploaded_by_me_data : data_uploaded_by_me,
       // shared_by_others : data_shared_by_others
     });

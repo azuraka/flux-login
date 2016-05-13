@@ -28,6 +28,7 @@ var SignatureArea = React.createClass({
       });
       return (
         <div>
+          <h2>Select Signature Area</h2>
           <div>
             {images}
           </div>
