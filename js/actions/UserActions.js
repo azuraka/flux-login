@@ -53,6 +53,15 @@ var UserActions = {
       // Call to get all Profile info
       get_profile_info();
 
+
+      // Call for getting all transactions
+      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/transactions","GET",null,function (data) {
+        AppDispatcher.dispatch({
+          actionType: UserConstants.ALL_TRANSACTIONS,
+          response: data
+        });
+      });
+
       // Call for getting all docs
       Functions.ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
         AppDispatcher.dispatch({
@@ -64,7 +73,7 @@ var UserActions = {
       // Call for getting requests pending on others
       Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
         get_profile_info();
-        
+
         AppDispatcher.dispatch({
           actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
           response: data
@@ -155,7 +164,7 @@ var UserActions = {
         actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
         response: json['message']
       });
-    });  
+    });
   },
 
   SendCheckAadharOTP: function(aadharNum, uuid, state_id, post_co) {

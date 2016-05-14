@@ -9,6 +9,7 @@ var AllDocumentStore = require('../stores/AllDocumentStore');
 var DocumentVault = require('./DocumentVault.react');
 var RequestsVault = require('./RequestsVault.react');
 var ProfileInfo = require('./ProfileInfo.react');
+var AllTransactions = require('./AllTransactions.react');
 
 var AuthStore = require('../stores/AuthStore');
 var UserInfoStore = require('../stores/UserInfoStore');
@@ -24,6 +25,7 @@ var MainSection = React.createClass({
         <Register />
         <Login />
         <ProfileInfo />
+        <AllTransactions />
         <UserInfo />
         <DocumentVault />
         <RequestsVault />
