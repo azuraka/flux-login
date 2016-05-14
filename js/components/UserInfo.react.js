@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
-var AuthStore = require('../stores/AuthStore');
+var UserStore = require('../stores/UserStore');
 var UserInfoStore = require('../stores/UserInfoStore');
 
 var UserInfo = React.createClass({
@@ -10,11 +10,13 @@ var UserInfo = React.createClass({
     return {display: 0, name: '', email: '', has_aadhaar: false};
   },
   componentDidMount: function() {
-    UserInfoStore.addChangeListener(this._onChange);
+    UserInfoStore.addChangeListener(this._onChangeState);
+    UserStore.addChangeListener(this._onChangeState);
   },
 
   componentWillUnmount: function() {
-    UserInfoStore.removeChangeListener(this._onChange);
+    UserInfoStore.removeChangeListener(this._onChangeState);
+    UserStore.removeChangeListener(this._onChangeState);
   },
 
   render: function() {
@@ -35,20 +37,17 @@ var UserInfo = React.createClass({
     }
   },
 
-  _onChange: function() {
+  _onChangeState: function() {
     var data = UserInfoStore.update_user();
 
     this.setState({
+      display: UserStore.displayUserInfo(),
       name : data.name,
       email : data.email,
       has_aadhaar : data.has_aadhaar,
       userID : data.userID
-    }
-    );
-
-  },
-
-
+    });
+  }
 
 });
 

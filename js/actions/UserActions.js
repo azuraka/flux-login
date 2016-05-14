@@ -39,20 +39,20 @@ var UserActions = {
 
     var loginData = {email, password}
     Functions.ajaxRequest("http://docx.8finatics.com/auth/login", 'POST', loginData, function (data) {
-      userID = data.data.id;
-      AppDispatcher.dispatch({
-        actionType: UserConstants.USER_LOGIN_SUCCESS,
-        response: data['message']
-      });
+      if(data['status']=='success') {
+        userID = data.data.id;
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_LOGIN_SUCCESS,
+          response: data['message']
+        });
 
-      AppDispatcher.dispatch({
-        actionType: UserConstants.USER_INFO,
-        response:data
-      });
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_INFO,
+          response:data
+        });
 
-      // Call to get all Profile info
-      get_profile_info();
-
+        // Call to get all Profile info
+        get_profile_info();
 
       // Call for getting all transactions
       Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/transactions","GET",null,function (data) {
@@ -62,39 +62,60 @@ var UserActions = {
         });
       });
 
-      // Call for getting all docs
-      Functions.ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
-        AppDispatcher.dispatch({
-          actionType: UserConstants.USER_ALL_DOCUMENTS,
-          response: data
+        // Call for getting all docs
+        Functions.ajaxRequest("http://docx.8finatics.com/documents","GET",null,function (data) {
+          AppDispatcher.dispatch({
+            actionType: UserConstants.USER_ALL_DOCUMENTS,
+            response: data
+          });
         });
       });
 
-      // Call for getting requests pending on others
-      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
-        get_profile_info();
-
-        AppDispatcher.dispatch({
-          actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
-          response: data
+        // Call for getting requests pending on others
+        Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_requests","GET",null,function (data) {
+          get_profile_info();
+          
+          AppDispatcher.dispatch({
+            actionType: RequestsConstants.REQUESTS_PENDING_ON_OTHERS,
+            response: data
+          });
         });
       });
 
-      // Call for getting requests pending on me
-      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_signs","GET",null,function (data) {
-        AppDispatcher.dispatch({
-          actionType: RequestsConstants.REQUESTS_PENDING_ON_ME,
-          response: data
+        // Call for getting requests pending on me
+        Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/pending_signs","GET",null,function (data) {
+          AppDispatcher.dispatch({
+            actionType: RequestsConstants.REQUESTS_PENDING_ON_ME,
+            response: data
+          });
         });
-      });
 
-      // Call for getting completed requests
-      Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/completed_requests","GET",null,function (data) {
-        AppDispatcher.dispatch({
-          actionType: RequestsConstants.REQUESTS_COMPLETED,
-          response: data
+        // Call for getting completed requests
+        Functions.ajaxRequest("http://docx.8finatics.com/user/"+userID+"/action/completed_requests","GET",null,function (data) {
+          AppDispatcher.dispatch({
+            actionType: RequestsConstants.REQUESTS_COMPLETED,
+            response: data
+          });
         });
-      });
+      }
+      else{
+        AppDispatcher.dispatch({
+          actionType: UserConstants.USER_LOGIN_FAIL,
+          response: data['message']
+        });
+      }
+    });
+  },
+
+  UserLogout: function() {
+
+    AppDispatcher.dispatch({
+      actionType: UserConstants.USER_LOGIN_LOADING,
+      response: "loading ..."
+    });
+
+    Functions.ajaxRequest("http://docx.8finatics.com/auth/logout", 'GET', null, function (data) {
+      console.log(data);
     });
   },
 
@@ -108,20 +129,55 @@ var UserActions = {
     var fileData = new FormData();
     fileData.append("document", fileObj);
     fileData.append("title","");
-    Functions.ajaxRequest("http://docx.8finatics.com/user/document", 'POST', fileData, function(data) {
-      AppDispatcher.dispatch({
-        actionType: UserConstants.FILE_UPLOAD_SUCCESS,
-        response:data
-      });
-
-      var useful_data = data[0]['data'];
-      var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
-      Functions.ajaxRequest(url,"GET",null,function (json) {
+    $.ajax({
+      type: 'POST',
+      data: fileData,
+      url: "http://docx.8finatics.com/user/document",
+      cache: false,
+      processData: false,
+      contentType: false,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Authorization": "Basic c2pAZmlub21lbmEuY29tOmxvbA=="
+    },
+      success: function(data) {
         AppDispatcher.dispatch({
-          actionType: UserConstants.DISPLAY_IMAGE_SUCCESS,
-          response: json
+          actionType: UserConstants.FILE_UPLOAD_SUCCESS,
+          response:data
         });
-      });
+
+        var useful_data = data[0]['data'];
+        var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
+        Functions.ajaxRequest(url,"GET",null,function (json) {
+          AppDispatcher.dispatch({
+            actionType: UserConstants.DISPLAY_IMAGE_SUCCESS,
+            response: json
+          });
+        });
+
+      }.bind(this),
+
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+          AppDispatcher.dispatch({
+            actionType: UserConstants.FILE_UPLOAD_FAIL,
+            response: err.toString()
+          });
+      }.bind(this)
+    });
+
+  },
+
+  ChangeDisplay: function(id=0) {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.CHANGE_PAGE_HEADER,
+      board: id
+    });
+  },
+
+  SignNow: function() {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.SIGN_NOW,
     });
   },
 
@@ -159,12 +215,25 @@ var UserActions = {
     };
     Functions.ajaxRequest('http://docx.8finatics.com/user/ekyc/validate', 'POST', OTPData, function (json) {
       console.log(json);
-      get_profile_info();
+      if(json['status']=='success') {
+        get_profile_info();
+        AppDispatcher.dispatch({
+          actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
+          response: json['message']
+        });
+      }
+      else{
+        AppDispatcher.dispatch({
+          actionType: UserConstants.LINK_AADHAR_OTP_VERIFICATION_FAILED,
+          response: json['message']
+        });
+      }
+    },
+    function () {
       AppDispatcher.dispatch({
-        actionType: UserConstants.LINK_AADHAR_OTP_VERIFIED,
-        response: json['message']
+        actionType: UserConstants.LINK_AADHAR_OTP_VERIFICATION_AJAX_FAILED
       });
-    });
+    });  
   },
 
   SendCheckAadharOTP: function(aadharNum, uuid, state_id, post_co) {
@@ -178,10 +247,12 @@ var UserActions = {
     };
     Functions.ajaxRequest('http://docx.8finatics.com/document/' + uuid + '/' + state_id + '/requestOTP', 'POST', aadharData, function (data) {
       console.log(data);
-      AppDispatcher.dispatch({
-        actionType: UserConstants.CHECK_AADHAR_OTP_SENT,
-        response: data
-      });
+      if(data['status']=='success'){
+        AppDispatcher.dispatch({
+          actionType: UserConstants.CHECK_AADHAR_OTP_SENT,
+          response: data['message']
+        });
+      }
     });
   },
 
@@ -199,19 +270,27 @@ var UserActions = {
     console.log(SignData);
     Functions.ajaxRequest('http://docx.8finatics.com/document/' + uuid + '/' + state_id + '/sign', 'POST', SignData, function (data) {
       console.log(data);
-      AppDispatcher.dispatch({
-        actionType: UserConstants.CHECK_AADHAR_OTP_VERIFIED,
-        response: data['message']
-      });
-
-      var useful_data = data['data'];
-      var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
-      Functions.ajaxRequest(url,"GET",null,function (json) {
+      if(data['status']=='success'){
         AppDispatcher.dispatch({
-          actionType: UserConstants.DISPLAY_SIGNED_IMAGE_SUCCESS,
-          response: json
+          actionType: UserConstants.CHECK_AADHAR_OTP_VERIFIED,
+          response: data['message']
         });
-      });
+
+        var useful_data = data['data'];
+        var url = "http://docx.8finatics.com/document/" + useful_data['uuid'] + "/" + useful_data['state_id'] + "/images";
+        Functions.ajaxRequest(url,"GET",null,function (json) {
+          AppDispatcher.dispatch({
+            actionType: UserConstants.DISPLAY_SIGNED_IMAGE_SUCCESS,
+            response: json
+          });
+        });
+      }
+      else {
+        AppDispatcher.dispatch({
+          actionType: UserConstants.CHECK_AADHAR_OTP_VERIFICATION_FAILED,
+          response: data['message']
+        });
+      }
     });
   },
 

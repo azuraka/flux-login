@@ -5,7 +5,7 @@ var UserStore = require('../stores/UserStore');
 var AadharOTP = React.createClass({
 
   getInitialState: function() {
-    return {display:0, status:'', input_otp:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
+    return {display:0, input_otp:'', post_co:[], aadharNum:'', uuid:'', state_id:''};
   },
   
   componentDidMount: function() {
@@ -50,7 +50,7 @@ var AadharOTP = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
+    this.setState({display: UserStore.aadharOTPDisplay(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
   }
 });
 

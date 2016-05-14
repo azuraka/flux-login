@@ -28,12 +28,14 @@ var SignatureArea = React.createClass({
       });
       return (
         <div>
+          <h2>Select Signature Area</h2>
           <div>
             {images}
           </div>
           <div>
               <button id="sign" type="button" onClick={this._onSign}>Finalize Selected Area and SendOTP</button>
           </div>
+          <div>{this.state.status}</div>
           <DisplayImage list={this.state.img_list_signed} />
         </div>
       );
@@ -96,7 +98,7 @@ var SignatureArea = React.createClass({
   },
 
   _onChangeState: function() {
-    this.setState({img_list: UserStore.setImageList(), img_list_signed: UserStore.setImageListSigned(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
+    this.setState({status: UserStore.setStatusCheckOTP(),display: UserStore.signatureAreaDisplay(),img_list: UserStore.setImageList(), img_list_signed: UserStore.setImageListSigned(), uuid:UserStore.setDocInfo()[0], state_id:UserStore.setDocInfo()[1]});
   }
 });
 

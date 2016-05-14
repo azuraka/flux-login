@@ -8,7 +8,7 @@ var CHANGE_EVENT = 'change';
 var statusReg = '';
 var statusLog = '';
 var authDisplay = 1;
-var uploadDocDisplay = 0;
+var headerDisplay = 0;
 
 function create_status_reg(message) {
   statusReg = message;
@@ -20,7 +20,11 @@ function create_status_log(message) {
 
 function set_auth_display() {
   authDisplay = 0;
-  uploadDocDisplay = 1;
+  headerDisplay = 1;
+}
+
+function change_display() {
+  uploadDocDisplay = 0;
 }
 
 var AuthStore = assign({}, EventEmitter.prototype, {
@@ -36,9 +40,8 @@ var AuthStore = assign({}, EventEmitter.prototype, {
     return authDisplay;
   },
 
-  uploadDocDisplay: function() {
-    console.log(uploadDocDisplay + "asdfg");
-    return uploadDocDisplay;
+  headerDisplay: function() {
+    return headerDisplay;
   },
 
   emitChange: function() {

@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var UserActions = require('../actions/UserActions');
-var AuthStore = require('../stores/AuthStore');
+var UserStore = require('../stores/UserStore');
 var SignRequestsStore = require('../stores/SignRequestsStore');
 var RequestList = require('./RequestList.react');
 
@@ -18,10 +18,12 @@ var RequestsVault = React.createClass({
 
   componentDidMount: function() {
     SignRequestsStore.addChangeListener(this._onChange);
+    UserStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
     SignRequestsStore.removeChangeListener(this._onChange);
+    UserStore.removeChangeListener(this._onChange);
   },
 
   render: function() {
@@ -48,6 +50,7 @@ var RequestsVault = React.createClass({
     var requests_completed = SignRequestsStore.get_requests_completed();
 
     this.setState({
+      display: UserStore.displayRequestsVault(),
       requests_pending_on_others : requests_pending_on_others,
       requests_pending_on_me : requests_pending_on_me,
       requests_completed : requests_completed
